@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>@Input-Set Pattern for Angular&#39;s Widgets | michaeljota</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Pattern proposal for data management in Angular&apos;s Widgets">
+<meta name="keywords" content="angular,components,widgets">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@Input-Set Pattern for Angular&#39;s Widgets">
+<meta property="og:url" content="http://michaeljota.github.com/input-set-pattern-for-angular-s-widgets/index.html">
+<meta property="og:site_name" content="michaeljota">
+<meta property="og:description" content="Pattern proposal for data management in Angular&apos;s Widgets">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-02-01T23:39:28.372Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="@Input-Set Pattern for Angular&#39;s Widgets">
+<meta name="twitter:description" content="Pattern proposal for data management in Angular&apos;s Widgets">
+  
+    <link rel="alternate" href="/atom.xml" title="michaeljota" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">michaeljota</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">A world about my thoughs</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://michaeljota.github.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-input-set-pattern-for-angular-s-widgets" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/input-set-pattern-for-angular-s-widgets/" class="article-date">
+  <time datetime="2017-05-28T16:00:00.000Z" itemprop="datePublished">2017-05-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      @Input-Set Pattern for Angular&#39;s Widgets
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>If you read my last post, you should know what a Widget is, if you haven’t already, do it now, I’ll <em>await</em>. </p>
+<p><code>await Reader.read(&#39;</code><a href="/widgets-and-components-for-angular/">Widgets and components</a><code>&#39;);</code></p>
+<p>Now you know what Widgets should be. I tried to keep it simple for the first implementation, but I’m really turning my head around this. The thing is, React is a JavaScript pure framework and with JSX allow us to do things that we can’t made with plain HTML templates, nevertheless, Typescript allow us for things that JavaScript does not, at the very least, it seems to allow that. Like <em>private</em> properties. With that in mind, I’ll try to explain why you should use private properties inside a Widget and how to manage the data entry in a better way.</p>
+<h2 id="The-situation"><a href="#The-situation" class="headerlink" title="The situation"></a>The situation</h2><p>Following the comparative with React from the last post, when the <code>props</code> are send to a <code>component</code>, most of the the time we are getting it following the destructive pattern, allowing to do things like:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">interface IUser &#123;</span><br><span class="line">  firstname: string;</span><br><span class="line">  lastname: string;</span><br><span class="line">  age: number;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export function usersList(&#123;users = []&#125; : &#123; IUser[] &#125;) &#123;</span><br><span class="line">  return (&lt;ul&gt;</span><br><span class="line">    users.map(user =&gt; userDetails(user));</span><br><span class="line">  &lt;/ul&gt;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function userDetails(&#123;firstname, lastname, age&#125;: IUser) &#123;</span><br><span class="line">    return (&lt;li&gt;&lt;span&gt;&#123;firstname&#125; &#123;lastname&#125;&lt;/span&gt;have &#123;age&#125; years old&lt;/li&gt;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>I think this looks good, because it allow us to be explicit about what we want to show, and how to show it.</p>
+<p>In Angular, we just <code>@Input</code> the data that we want to get from the outside.<br><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// user.ts</span></span><br><span class="line"><span class="keyword">interface</span> IUser &#123;</span><br><span class="line">  firstname: <span class="built_in">string</span>;</span><br><span class="line">  lastname: <span class="built_in">string</span>;</span><br><span class="line">  age: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// user-list.widget.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-user-list'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;ul&gt;</span></span><br><span class="line"><span class="string">    &lt;li *ngFor="let user of users"&gt;</span></span><br><span class="line"><span class="string">      &lt;my-user-details [user]=user&gt;&lt;my-user-details&gt;</span></span><br><span class="line"><span class="string">    &lt;/li&gt;</span></span><br><span class="line"><span class="string">  &lt;/ul&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UserListWidget &#123;</span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">public</span> users: IUser[];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// user-details.widget.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-user-details'</span>,</span><br><span class="line">  template: </span><br><span class="line">    <span class="string">`&lt;span&gt;&#123;&#123;user.firstname&#125;&#125; &#123;&#123;user.lastname&#125;&#125;&lt;/span&gt; has &#123;&#123;user.age&#125;&#125; years old`</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UserDetailsWidget &#123;</span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">public</span> user: IUser;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>This is right, as Widgets are suppose to display data, and they should <em>only</em> concern should be how to display that data. But we need a better way to organize how we show that data correctly in the template.</p>
+<p>I like the approach from React in that sense. Don’t get me wrong, I love Angular. But JSX allow us to do something nicer than dotter properties, destructive assignment.</p>
+<h2 id="Solution-proposal"><a href="#Solution-proposal" class="headerlink" title="Solution proposal"></a>Solution proposal</h2><p>Now that is being clearer that React have a somewhat advantage above us, we as Angular developers need to propose a solution to be even, using features that are being bringed by Typescript, <em>private</em> properties. I know that Typescript is compiled to JavaScript, and JavaScript doesn’t have such things, but, we’ll do as we don’t care.<br>Also, we will use a ES6 <code>set</code> feature. This allow us to have properties that can be set, but cannot be read.</p>
+<h3 id="Introducing-input-set"><a href="#Introducing-input-set" class="headerlink" title="Introducing @input set"></a>Introducing <code>@input set</code></h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-user-details'</span>,</span><br><span class="line">  template: </span><br><span class="line">    <span class="string">`&lt;span&gt;&#123;&#123;firstname&#125;&#125; &#123;&#123;lastname&#125;&#125;&lt;/span&gt; has &#123;&#123;age&#125;&#125; years old`</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UserDetailsWidget &#123;</span><br><span class="line">  <span class="keyword">private</span> _user: IUser;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">set</span> user(value: User): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>._user = value;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>OK. We learn we can set to private properties, but that does not quite allow us to show the properties in the template. Technically JavaScript only have properties, so we could bind to the private property, but we should <em>never</em> bind a private property to the template, as the AOT compiler would throw.</p>
+<h3 id="Introducing-template-get"><a href="#Introducing-template-get" class="headerlink" title="Introducing template get"></a>Introducing <code>template get</code></h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-user-details'</span>,</span><br><span class="line">  template: </span><br><span class="line">  <span class="string">`&lt;span&gt;&#123;&#123;firstname&#125;&#125; &#123;&#123;lastname&#125;&#125;&lt;/span&gt; has &#123;&#123;age&#125;&#125; years old`</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UserDetailsWidget &#123;</span><br><span class="line">  <span class="keyword">private</span> _user: IUser;</span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">set</span> user(value: IUser) &#123;</span><br><span class="line">    <span class="keyword">this</span>._user = value;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">get</span> firstname(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._user.firstname;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">get</span> lastname(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._user.lastname;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">get</span> age(): age &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._user.age;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>This actually works as expected. Allowing a better control over the data that are being displayed in the template, and how to expose it. Also, it would even allow us to do certain things, to maintain the code in a better way.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-user-details'</span>,</span><br><span class="line">  template: </span><br><span class="line">  <span class="string">`&lt;span&gt;&#123;&#123;fullname&#125;&#125;&lt;/span&gt; has &#123;&#123;age&#125;&#125; years old`</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UserDetailsWidget &#123;</span><br><span class="line">  <span class="keyword">private</span> _user: IUser;</span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">set</span> user(value: IUser) &#123;</span><br><span class="line">    <span class="keyword">this</span>._user = value;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">get</span> fullname(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;this._user.firstname&#125;</span> <span class="subst">$&#123;this._user.lastname&#125;</span>`</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">get</span> age(): <span class="built_in">number</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._user.age;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>However, <code>template get</code> as showed here have certain issues, but I’ll explain everything about those issues properly in other post.</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>For this, I made a little Plunker that expose the use case. <a href="http://plnkr.co/edit/qQMk8kCH0wWp3yznE6MX?p=preview" target="_blank" rel="noopener">Here</a></p>
+<h2 id="Thanks-you"><a href="#Thanks-you" class="headerlink" title="Thanks you"></a>Thanks you</h2><p>As always, thank you for reading this long. I hope you like it, and I am really looking forward to read your thoughts in the comments section. </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://michaeljota.github.com/input-set-pattern-for-angular-s-widgets/" data-id="cjd5v7wc60008cctzseztjs01" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/components/">components</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/widgets/">widgets</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/readonly-input-for-primitive-properties-in-angular-s-widgets/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Readonly Input for Primitive Properties in Angular&#39;s Widgets
+        
+      </div>
+    </a>
+  
+  
+    <a href="/widgets-and-components-for-angular/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Widgets and Components for Angular 2 and Up</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/angular/">angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/components/">components</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/electron/">electron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es2018/">es2018</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webcomponents/">webcomponents</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/widgets/">widgets</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/angular/" style="font-size: 20px;">angular</a> <a href="/tags/components/" style="font-size: 17.5px;">components</a> <a href="/tags/electron/" style="font-size: 15px;">electron</a> <a href="/tags/es2018/" style="font-size: 10px;">es2018</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/typescript/" style="font-size: 12.5px;">typescript</a> <a href="/tags/webcomponents/" style="font-size: 10px;">webcomponents</a> <a href="/tags/widgets/" style="font-size: 15px;">widgets</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/integration-an-angular-cli-application-with-electron-the-ipc/">Integration an Angular-CLI Application With Electron - the IPC</a>
+          </li>
+        
+          <li>
+            <a href="/electron-with-typescript-using-ts-node/">Electron With Typescript Using Ts-Node</a>
+          </li>
+        
+          <li>
+            <a href="/integration-an-angular-cli-application-with-electron-the-seed/">Integration an Angular-CLI Application With Electron - the Seed</a>
+          </li>
+        
+          <li>
+            <a href="/finally-we-have-a-finally-but-we-already-had-one/">Finally! We Have a Finally (But We Already Had One)</a>
+          </li>
+        
+          <li>
+            <a href="/pages-a-component-convention-for-angular-s-pages/">Pages: A Component Convention for Angular&#39;s Pages</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Michael De Abreu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

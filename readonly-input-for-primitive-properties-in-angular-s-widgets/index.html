@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Readonly Input for Primitive Properties in Angular&#39;s Widgets | michaeljota</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Another way to handle the inputs in a widget in a right way.">
+<meta name="keywords" content="angular,javascript,components,widgets">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Readonly Input for Primitive Properties in Angular&#39;s Widgets">
+<meta property="og:url" content="http://michaeljota.github.com/readonly-input-for-primitive-properties-in-angular-s-widgets/index.html">
+<meta property="og:site_name" content="michaeljota">
+<meta property="og:description" content="Another way to handle the inputs in a widget in a right way.">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-02-01T23:24:39.508Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Readonly Input for Primitive Properties in Angular&#39;s Widgets">
+<meta name="twitter:description" content="Another way to handle the inputs in a widget in a right way.">
+  
+    <link rel="alternate" href="/atom.xml" title="michaeljota" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">michaeljota</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">A world about my thoughs</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://michaeljota.github.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-readonly-input-for-primitive-properties-in-angular-s-widgets" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/readonly-input-for-primitive-properties-in-angular-s-widgets/" class="article-date">
+  <time datetime="2017-08-27T16:00:00.000Z" itemprop="datePublished">2017-08-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Readonly Input for Primitive Properties in Angular&#39;s Widgets
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Hi! It’s me again. Today I’m releasing the first stable version of my Pomodoro application. I made it using Angular 4, and Electron. While I was developing it, I try to use TDD, use a ngrx/Store, and separate the components of <a href="/widgets-and-components-for-angular-2-and-up">the Widgets</a>, and use <a href="/input-set-pattern-for-widgets-in-angular">the @Input-set, and template-get</a> for manage data. </p>
+<p>But I have to say it, I failed, I failed big time. First at all, I come to realize why TDD is a design pattern, if you don’t have defined what you want to do, you can’t test first. I try to use the Store, but at the end I managed all the state from one component. But I did use Widgets to display the content, where I could. Well, this is actually the first application I do by my self, so, don’t be mean. I’ve been working with AngularJS since 1.2, and with Angular since RC5, but I never had to design the functionality of the app, the business logic was a piece of the company I’d worked on. </p>
+<p>However, where I failed the most was at using the @Input-set/template-get duo. I mean, I could use them, but I most manage primitives values, so why bother? Still, one advantage of this approach is that you could treat the values as inmutables, because you set it somewhere, and return it somewhere else, there is no place to side effects there. </p>
+<p>So how to deal with primitives, without written unnecessary code lines, and still maintaining the immutability? Well, Typescript 2 brought a nice feature to deal with this <code>readonly modifier</code>. You can read more about that <a href="https://basarat.gitbooks.io/typescript/docs/types/readonly.html" target="_blank" rel="noopener">here</a>. It is different from a const, cause the assignment check it’s doing in compilation time, instead of runtime. Meaning, that even if you set your property to <code>readonly</code>, in runtime in can be written as many times as needed. But this approach allows us to be sure that the property will be only written by the inputed value, and we ain’t going to modify it.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">enum</span> Cicle &#123;</span><br><span class="line">  <span class="comment">// Cicle values</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  <span class="comment">// Component definitions</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> StartButtonWidget &#123;</span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">public</span> readonly cicle: Cicle;</span><br><span class="line">  <span class="meta">@Output</span>()</span><br><span class="line">  <span class="keyword">public</span> onClick: EventEmitter&lt;Cicle&gt; = <span class="keyword">new</span> EventEmitter&lt;Cicle&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">get</span> label(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="comment">// Returns a strings from the value of the cicle</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> emit(): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.onClick.emit(<span class="keyword">this</span>.cicle);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>As you can see, using a readonly property for our input primitives allow us to be sure about how and when it’s the property changing. But, I still think this have a disadvantage. If you need to input a value, and display another value, you could accidentally access the property in a wrong way. And I don’t mean you exactly, but the team you work in. With the <code>@input-set/template-get</code> the intentions you have when you write are clears, but with this, you have to be sure that the primitive is going to be use the way you expect. Documentation would be do it, I think.</p>
+<p>This is just another way to deals with properties in Typescript and Angular framework, I’m sure that you have many ways more, and I would like to read about them in the comments bellow.</p>
+<p>As always, thanks for reading, and I hope you’d liked. </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://michaeljota.github.com/readonly-input-for-primitive-properties-in-angular-s-widgets/" data-id="cjd5v7wch000bcctz74gv9mem" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/components/">components</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/widgets/">widgets</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/pages-a-component-convention-for-angular-s-pages/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Pages: A Component Convention for Angular&#39;s Pages
+        
+      </div>
+    </a>
+  
+  
+    <a href="/input-set-pattern-for-angular-s-widgets/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">@Input-Set Pattern for Angular&#39;s Widgets</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/angular/">angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/components/">components</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/electron/">electron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es2018/">es2018</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webcomponents/">webcomponents</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/widgets/">widgets</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/angular/" style="font-size: 20px;">angular</a> <a href="/tags/components/" style="font-size: 17.5px;">components</a> <a href="/tags/electron/" style="font-size: 15px;">electron</a> <a href="/tags/es2018/" style="font-size: 10px;">es2018</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/typescript/" style="font-size: 12.5px;">typescript</a> <a href="/tags/webcomponents/" style="font-size: 10px;">webcomponents</a> <a href="/tags/widgets/" style="font-size: 15px;">widgets</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/integration-an-angular-cli-application-with-electron-the-ipc/">Integration an Angular-CLI Application With Electron - the IPC</a>
+          </li>
+        
+          <li>
+            <a href="/electron-with-typescript-using-ts-node/">Electron With Typescript Using Ts-Node</a>
+          </li>
+        
+          <li>
+            <a href="/integration-an-angular-cli-application-with-electron-the-seed/">Integration an Angular-CLI Application With Electron - the Seed</a>
+          </li>
+        
+          <li>
+            <a href="/finally-we-have-a-finally-but-we-already-had-one/">Finally! We Have a Finally (But We Already Had One)</a>
+          </li>
+        
+          <li>
+            <a href="/pages-a-component-convention-for-angular-s-pages/">Pages: A Component Convention for Angular&#39;s Pages</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Michael De Abreu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

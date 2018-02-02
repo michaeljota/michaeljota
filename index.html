@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>michaeljota</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="My blog">
+<meta property="og:type" content="website">
+<meta property="og:title" content="michaeljota">
+<meta property="og:url" content="http://michaeljota.github.com/index.html">
+<meta property="og:site_name" content="michaeljota">
+<meta property="og:description" content="My blog">
+<meta property="og:locale" content="en">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="michaeljota">
+<meta name="twitter:description" content="My blog">
+  
+    <link rel="alternate" href="/atom.xml" title="michaeljota" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">michaeljota</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">A world about my thoughs</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://michaeljota.github.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-integration-an-angular-cli-application-with-electron-the-ipc" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/integration-an-angular-cli-application-with-electron-the-ipc/" class="article-date">
+  <time datetime="2018-01-29T16:00:00.000Z" itemprop="datePublished">2018-01-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/integration-an-angular-cli-application-with-electron-the-ipc/">Integration an Angular-CLI Application With Electron - the IPC</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Previously-on…"><a href="#Previously-on…" class="headerlink" title="Previously on…"></a>Previously on…</h1><p>In the previous sections and stories, I explained how to integrate an Angular-CLI generated application with Electron, and also how to write the same Electron application in Typescript. So far, this would allow a simple Angular application being packed as a Electron application, but there is no way for us to interact with Electron’s main thread.</p>
+<ul>
+<li><a href="/integrating-an-angular-cli-application-with-electron-the-seed">The seed</a></li>
+<li><a href="/electron-with-typescript-using-ts-node">Electron with Typescript</a></li>
+</ul>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>In this post I’ll try to explain how to get a real integrating between Angular and Electron, and be able to communicate using Electron’s IPC.</p>
+<h2 id="What-is-IPC"><a href="#What-is-IPC" class="headerlink" title="What is IPC?"></a>What is IPC?</h2><p>IPC is the inter-process communication module of Electron. With that you can send messages between your web application and the main thread application. To send and receive messages in the main thread you would have to use the <a href="https://electronjs.org/docs/api/ipc-main" target="_blank" rel="noopener">ipcMain</a> function property. Likewise, for the renderer process you would like to use the <a href="https://electronjs.org/docs/api/ipc-renderer" target="_blank" rel="noopener">ipcRenderer</a>.</p>
+<h2 id="How-to-use-ipcMain"><a href="#How-to-use-ipcMain" class="headerlink" title="How to use ipcMain?"></a>How to use ipcMain?</h2><p>Use ipcMain is a simple as require it, and use one of the functions that are able for us.<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ipcMain &#125; <span class="keyword">from</span> <span class="string">'electron'</span>;</span><br><span class="line"></span><br><span class="line">ipcMain.on(<span class="string">'ping'</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">    logger(<span class="string">'ping'</span>); <span class="comment">// Assume there is a logger function that would display 'ping' in console. console object does not work as-is, and it's not so easy to configure it.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>With that, the application will be listening a <code>&#39;ping&#39;</code> event, and will print <code>ping</code> in the console. Easy peasy.</p>
+<h2 id="How-to-normally-use-ipcRenderer"><a href="#How-to-normally-use-ipcRenderer" class="headerlink" title="How to (normally) use ipcRenderer?"></a>How to (normally) use ipcRenderer?</h2><p>In a normal scenario, a simple <code>require(&#39;electron&#39;).ipcRenderer</code> would give us access to the IPC in the renderer thread. So, following the previous example, we could do something like:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; ipcRenderer &#125; = <span class="built_in">require</span>(<span class="string">'electron'</span>);</span><br><span class="line"></span><br><span class="line">ipcRenderer.send(<span class="string">'ping'</span>);</span><br></pre></td></tr></table></figure>
+<p>This will invoke the callback function in the main thread. </p>
+<p>But, this won’t work in the Angular-CLI application. Angular-CLI underneath uses Webpack, and thus the latter will find the <code>require</code> <em>key</em> word, interpret as a call for the Node.js’ <code>require</code> function, and will try to resolve the ‘electron’ module. </p>
+<h2 id="A-Story-about-two-requires"><a href="#A-Story-about-two-requires" class="headerlink" title="A Story about two requires"></a>A Story about two <code>require</code>s</h2><p><code>require</code> as been with us for a while, since the first version of Node back in 2008, almost 10 years. But still is one of the most misunderstand functions in modern web development. With the integration of <code>import</code> and <code>export</code> keywords in Node, several articles was written to explain how the <code>require</code> function currently works. TL;DR: A <code>require</code> function is injected for every file, allowing Node to resolve the dependencies. Later, module builders will look for <code>import</code> and <code>require</code> and will try to resolve modules, assuming that’s what you want. </p>
+<p>So, now that we know that <code>require</code> is actually a function injected by Node, then how is <code>require</code> able to work in Electron renderer process. You may guessed it, Electron injects its own version of <code>require</code> function in the global scope of the renderer process when it loads the page. So, although it may seems like the same function, it is not. </p>
+<h2 id="How-to-use-ipcRenderer-in-a-Angular-CLI-application-Or-any-application-bundle-with-Webpack"><a href="#How-to-use-ipcRenderer-in-a-Angular-CLI-application-Or-any-application-bundle-with-Webpack" class="headerlink" title="How to use ipcRenderer in a Angular-CLI application? (Or any application bundle with Webpack)"></a>How to use ipcRenderer in a Angular-CLI application? (Or any application bundle with Webpack)</h2><p>To use <code>ipcRenderer</code> in our Angular-CLI app, we will leverage on the global scope. No, we won’t call ipcRenderer in the global context, although we could make this works, it’s not ideal. But I just told that <code>require</code> is a function that Electron injects in the global context. So, can we just use <code>require</code>? No. That’s because, as I also told, Webpack will try to resolve the module requirement. There is actually another way to access a global variable, that’s with the <code>window</code> object. The <code>window</code> object by default will have all the global variables, including <code>require</code>.</p>
+<p>So we can just use <code>window.require</code> in any part of our application and it would work as expected. In this context, you cannot use <code>window.require</code> to require any module in your Angular-CLI application, but you can load any module that you had set in your Electron application.</p>
+<h2 id="Writing-the-service"><a href="#Writing-the-service" class="headerlink" title="Writing the service"></a>Writing the service</h2><p>For this example we will expose the <code>ipc</code> as an Angular service, and will create it using angular-cli. We follow the guide about <a href="https://github.com/angular/angular-cli/wiki/generate-service" target="_blank" rel="noopener">services</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate service ipc -m app</span><br></pre></td></tr></table></figure>
+<p>This will create our service, and update our <code>app.module</code> to include it in the Angular application.</p>
+<p>Then, we write the code. We start by importing the IpcRenderer interface from electron module</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; IpcRenderer &#125; <span class="keyword">from</span> <span class="string">'electron'</span>;</span><br></pre></td></tr></table></figure>
+<p>But, we don’t have any Electron module in our Angular project, how will it be resolved? We’ll, actually we don’t need to have the Electron module in our Angular project, because as Typescript resolver work, it will look in <code>node_modules</code> in folders that are children from ours project. If you want to be extra safe, or if for any reason this is not a desire behavior, you could install the <code>@types</code> of electron, and it won’t load the hole package.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @types/electron</span><br></pre></td></tr></table></figure>
+<p>Next, we add a reference property inside the class to save the ipcRenderer function when we load it.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> _ipc: IpcRenderer | <span class="literal">undefined</span>;</span><br></pre></td></tr></table></figure>
+<p>It’s important to typed it as <code>IpcRenderer | undefined</code> for compile the code in strict mode, as we may or may not be able to load the ipcRenderer. We now write the constructor, to assign the <code>_ipc</code> in load time. </p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">window</span>.require) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>._ipc = <span class="built_in">window</span>.require(<span class="string">'electron'</span>).ipcRenderer;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      <span class="keyword">throw</span> e;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.warn(<span class="string">'Electron\'s IPC was not loaded'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>As you can see, we will first check if <code>window</code> object has a <code>require</code> property. With this we will assume we are inside Electron, then we will <code>try</code> to <code>require(&#39;electron&#39;)</code>, if for any reason it doesn’t work it just throw an error, and the property <code>_ipc</code> will be undefined. Checking require in the <code>window</code> object will allow us to run the service in a regular browser context, in that case the <code>_ipc</code> won’t have a assignment value and will be <code>undefined</code>.</p>
+<p>You should have Typescript complaining about <code>window</code> not having a <code>require</code> property, so we need to update the project’s typings file. Open <code>/src/typings.d.ts</code> and update with the following lines:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Window &#123;</span><br><span class="line">  <span class="built_in">require</span>: NodeRequire;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Now, Typescript shouldn’t be annoying us. </p>
+<p>I’ll add a couple of functions to the service, just to test that it actually works as expected.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> on(channel: <span class="built_in">string</span>, listener: <span class="built_in">Function</span>): <span class="built_in">void</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="keyword">this</span>._ipc) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>._ipc.on(channel, listener);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> send(channel: <span class="built_in">string</span>, ...args): <span class="built_in">void</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="keyword">this</span>._ipc) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>._ipc.send(channel, ...args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>As you can see, in both we check for the <code>_ipc</code> property to be assigned, and then we call the functions that we want to call. We expose the same function interface of the functions we want to call, so it will be very intuitive to call them from our application. </p>
+<p>The final service should look like:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; IpcRenderer &#125; <span class="keyword">from</span> <span class="string">'electron'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> IpcService &#123;</span><br><span class="line">  <span class="keyword">private</span> _ipc: IpcRenderer | <span class="literal">undefined</span> = <span class="built_in">void</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.require) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>._ipc = <span class="built_in">window</span>.require(<span class="string">'electron'</span>).ipcRenderer;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> e;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.warn(<span class="string">'Electron\'s IPC was not loaded'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> on(channel: <span class="built_in">string</span>, listener: IpcCallback): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>._ipc) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>._ipc.on(channel, listener);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> send(channel: <span class="built_in">string</span>, ...args): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>._ipc) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>._ipc.send(channel, ...args);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Testing-it"><a href="#Testing-it" class="headerlink" title="Testing it"></a>Testing it</h2><p>For testing we will call an ipc channel, and make Electron to response us back, and listen that response. </p>
+<p>First, we will update our <code>app.component</code> with the following constructor function:<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> readonly _ipc: IpcService</span>) &#123;</span><br><span class="line">  <span class="keyword">this</span>._ipc.on(<span class="string">'pong'</span>, <span class="function">(<span class="params">event: Electron.IpcMessageEvent</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'pong'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>._ipc.send(<span class="string">'ping'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>And then we will update Electron’s <code>index.ts</code> file, importing the <code>ipcMain</code> module and setting a listener for the <code>ping</code> event, that response <code>pong</code>.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// First we update the import line</span></span><br><span class="line"><span class="keyword">import</span> &#123; app, BrowserWindow, ipcMain, IpcMessageEvent &#125; <span class="keyword">from</span> <span class="string">'electron'</span>;</span><br><span class="line">...</span><br><span class="line">ipcMain.on(<span class="string">'ping'</span>, <span class="function">(<span class="params">event: IpcMessageEvent</span>) =&gt;</span> &#123;</span><br><span class="line">  event.sender.send(<span class="string">'pong'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Run the angular app with <code>npm run electron:start</code> and in the electron application run <code>npm start</code>. You should see a pong getting logged.</p>
+<p><img src="https://thepracticaldev.s3.amazonaws.com/i/xfyeh5gf2dvz66o54qdk.png" alt="pong"></p>
+<h1 id="Moving-forward"><a href="#Moving-forward" class="headerlink" title="Moving forward"></a>Moving forward</h1><p>There are still somethings that can be improve in the current workflow, and some of you are having troubles with native modules. But, so far we have pass for a simple Angular app, to a complete Angular/Electron integration. I’ll soon uploading all this to Github, to stay tune there as well. </p>
+<h1 id="That’s-all-folks"><a href="#That’s-all-folks" class="headerlink" title="That’s all folks"></a>That’s all folks</h1><p>As usual, thanks you for reading this, check out my others posts. Give the post love, and share it with your friends. See you next time.</p>
+<h1 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h1><ul>
+<li><a href="/integrating-an-angular-cli-application-with-electron-the-seed">The seed</a></li>
+<li><a href="/electron-with-typescript-using-ts-node">Electron with Typescript</a></li>
+<li><a href="/integrating-an-angular-cli-application-with-electron-the-ipc">The IPC</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://michaeljota.github.com/integration-an-angular-cli-application-with-electron-the-ipc/" data-id="cjd5v7waa0000cctzvcgocv7f" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/electron/">electron</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-electron-with-typescript-using-ts-node" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/electron-with-typescript-using-ts-node/" class="article-date">
+  <time datetime="2018-01-27T16:00:00.000Z" itemprop="datePublished">2018-01-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/electron-with-typescript-using-ts-node/">Electron With Typescript Using Ts-Node</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>In my last post, I talked about how to <a href="/integrating-an-angular-cli-application-with-electron-34mi">Integrate Angular-CLI with Electron</a>. One of the things that was missing was the use of Typescript, oposite to vanilla Javascript, though Electron’s  main is a Node based engine, so almost everything about ES2015 and ES2016 should work, some newer features are still missing as current version, <code>1.7.11</code>, is based on <code>node 7.9</code>. And, types are still missing, because of JavaScript. Using Electron with Typescript, is really simple, but we would need to install some modules.</p>
+<h2 id="Installing-dependencies"><a href="#Installing-dependencies" class="headerlink" title="Installing dependencies"></a>Installing dependencies</h2><p>We move to the Electron entry folder. In the case the you are integrating with Angular-CLI following my guide, it would be <code>electron</code> folder. Then, we run:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -D typescript ts-node</span><br></pre></td></tr></table></figure>
+<ul>
+<li><em>typescript</em>: Well, this is actually what we want to use.</li>
+<li><em>ts-node</em>: TypeScript execution environment and REPL for node. This will resolver all the <code>.ts</code> files on the fly. </li>
+</ul>
+<h2 id="Creating-tsconfig-json"><a href="#Creating-tsconfig-json" class="headerlink" title="Creating tsconfig.json"></a>Creating tsconfig.json</h2><p>Run <code>npx tsc --init</code> if you are using npm 5.2+ to create the <code>tsconfig.json</code>. As is it will work, so we will leave it. </p>
+<h2 id="Updating-files"><a href="#Updating-files" class="headerlink" title="Updating files"></a>Updating files</h2><p>We need to modify how the application runs.</p>
+<ul>
+<li>Create a folder named <code>src</code>, this will be our development folder.</li>
+<li>Move <code>index.js</code> to <code>src</code> and rename it <code>index.ts</code>. This is now a Typescript file.</li>
+<li>Create a new <code>index.js</code> in the application root, with the following content.<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'ts-node'</span>).register(); <span class="comment">// This will register the TypeScript compiler</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">'./src'</span>); <span class="comment">// This will load our Typescript application</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Running-Electron"><a href="#Running-Electron" class="headerlink" title="Running Electron"></a>Running Electron</h2><p>Now it’s time to try, and run <code>npm start</code> if you are following the integration guide, or <code>electron .</code> if you don’t have the associated script.</p>
+<p>You should see something like this:<br><img src="https://thepracticaldev.s3.amazonaws.com/i/z1g6mt642m943tunr9my.png" alt="electron-error"></p>
+<p>This is fine. Because we are using <code>__dirname</code> as our folder root, now Electron can’t find the app source. </p>
+<h2 id="Updating-index-ts"><a href="#Updating-index-ts" class="headerlink" title="Updating index.ts"></a>Updating <code>index.ts</code></h2><p>Hopefully, the solution is really simple. Just change <code>__dirname</code> in the <code>path.join</code> function with <code>app.getAppPath()</code>. </p>
+<p><em>What getAppPath() is?</em> <a href="https://electronjs.org/docs/api/app#appgetapppath" target="_blank" rel="noopener">Docs</a><br>This is a Electron function that will resolve to the root of the application path. </p>
+<h2 id="Running-Electron-again"><a href="#Running-Electron-again" class="headerlink" title="Running Electron (again)"></a>Running Electron (again)</h2><p>If everything went fine, you should now see your application running inside Electron.</p>
+<h1 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h1><p>This is just a guide to show how this <em>work</em>. However, I don’t recommend use <code>ts-node</code> as a production solution. Also, I have not test the <code>getAppPath</code> function in a bundle application, so it may fail. </p>
+<h1 id="Moving-forward"><a href="#Moving-forward" class="headerlink" title="Moving forward"></a>Moving forward</h1><p>We have now a Electron application written in Typescript. It could optimize for production by using a build system, such Webpack. Also, we could target <code>es6</code> in the <code>tsconfig</code> file as Electron main will work fine with es2015. </p>
+<p>Uses of native modules are something that seems to have interest of users, so I’ll probably made a guide about using them.</p>
+<h1 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h1><ul>
+<li><a href="/integrating-an-angular-cli-application-with-electron-34mi">The seed</a></li>
+<li><a href="/electron-with-typescript-using-ts-node-8oi">Electron with Typescript</a></li>
+<li><a href="/integrating-an-angular-cli-application-with-electron---the-ipc-4m18">The IPC</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://michaeljota.github.com/electron-with-typescript-using-ts-node/" data-id="cjd5v7wb20002cctzw3utjawn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/electron/">electron</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/typescript/">typescript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-integration-an-angular-cli-application-with-electron-the-seed" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/integration-an-angular-cli-application-with-electron-the-seed/" class="article-date">
+  <time datetime="2018-01-08T16:00:00.000Z" itemprop="datePublished">2018-01-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/integration-an-angular-cli-application-with-electron-the-seed/">Integration an Angular-CLI Application With Electron - the Seed</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Integrate-your-project-with-Electron"><a href="#Integrate-your-project-with-Electron" class="headerlink" title="Integrate your project with Electron"></a>Integrate your project with Electron</h1><p>Electron is a platform to develop desktop applications using web technologies like HTML, CSS and JS. Integrate a ng-cli application with Electron is more straightforward that it may seems.</p>
+<h2 id="Electron’s-two-package-structure"><a href="#Electron’s-two-package-structure" class="headerlink" title="Electron’s two package structure"></a>Electron’s two package structure</h2><p>If you are familiarized with Electron you may remember the two package structure. We will use a similar structure, but with a key difference: In a regular two package structure, the <code>/app/</code> folder will contains the Electron app. We will name this folder <code>/electron/</code> and another <code>/app/</code> folder inside will contains our compiled Angular application.</p>
+<p>It may seem like we are using the two package structure, but we are just separating the Electron part from the rest of the application. </p>
+<h2 id="Changes-in-the-app-configuration"><a href="#Changes-in-the-app-configuration" class="headerlink" title="Changes in the app configuration"></a>Changes in the app configuration</h2><ul>
+<li>Create a script in our Angular application <code>package.json</code>.</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">"electron:start": "ng build --watch -op=electron/app"</span><br></pre></td></tr></table></figure>
+<p>This will build the Angular app inside an app folder inside our Electron folder app, and will rebuild on every change.</p>
+<ul>
+<li>Add the new output folder into <code>.gitignore</code>, in <code>#compiled output</code> section, <code>/electron/app</code>.</li>
+<li>Modify the <code>base</code> tag of the <code>index.html</code> of our Angular app, as follow:<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">base</span> <span class="attr">href</span>=<span class="string">"./"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>Adding a dot before the slash will allow Electron to find the served files, and without a <code>404</code> error will be threw.</p>
+<p>This will be all the modifications that we need to integrate the application with Electron.</p>
+<h2 id="Creating-our-Electron-app"><a href="#Creating-our-Electron-app" class="headerlink" title="Creating our Electron app"></a>Creating our Electron app</h2><ul>
+<li>We need to create a <code>electron</code> folder inside our project. Inside we are going to run <code>npm init</code> command to create the Electron <code>package.json</code>. This folder will be our Electron root folder.</li>
+<li><p>We add Electron as a development dependency. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -D electron</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>We create the entry point for our Electron program.</p>
+</li>
+</ul>
+<p><em>index.js</em></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; app, BrowserWindow &#125; = <span class="built_in">require</span>(<span class="string">'electron'</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> url = <span class="built_in">require</span>(<span class="string">'url'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Keep a global reference of the window object, if you don't, the window will</span></span><br><span class="line"><span class="comment">// be closed automatically when the JavaScript object is garbage collected.</span></span><br><span class="line"><span class="keyword">let</span> win;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createWindow</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Create the browser window.</span></span><br><span class="line">  win = <span class="keyword">new</span> BrowserWindow(&#123; <span class="attr">width</span>: <span class="number">800</span>, <span class="attr">height</span>: <span class="number">600</span> &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// and load the index.html of the app.</span></span><br><span class="line">  win.loadURL(</span><br><span class="line">    url.format(&#123;</span><br><span class="line">      pathname: path.join(__dirname, <span class="string">'app'</span>, <span class="string">'index.html'</span>),</span><br><span class="line">      protocol: <span class="string">'file:'</span>,</span><br><span class="line">      slashes: <span class="literal">true</span>,</span><br><span class="line">    &#125;),</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Open the DevTools.</span></span><br><span class="line">  win.webContents.openDevTools();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Emitted when the window is closed.</span></span><br><span class="line">  win.on(<span class="string">'closed'</span>, () =&gt; &#123;</span><br><span class="line">    <span class="comment">// Dereference the window object, usually you would store windows</span></span><br><span class="line">    <span class="comment">// in an array if your app supports multi windows, this is the time</span></span><br><span class="line">    <span class="comment">// when you should delete the corresponding element.</span></span><br><span class="line">    win = <span class="literal">null</span>;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This method will be called when Electron has finished</span></span><br><span class="line"><span class="comment">// initialization and is ready to create browser windows.</span></span><br><span class="line"><span class="comment">// Some APIs can only be used after this event occurs.</span></span><br><span class="line">app.on(<span class="string">'ready'</span>, createWindow);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Quit when all windows are closed.</span></span><br><span class="line">app.on(<span class="string">'window-all-closed'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="comment">// On macOS it is common for applications and their menu bar</span></span><br><span class="line">  <span class="comment">// to stay active until the user quits explicitly with Cmd + Q</span></span><br><span class="line">  <span class="keyword">if</span> (process.platform !== <span class="string">'darwin'</span>) &#123;</span><br><span class="line">    app.quit();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.on(<span class="string">'activate'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="comment">// On macOS it's common to re-create a window in the app when the</span></span><br><span class="line">  <span class="comment">// dock icon is clicked and there are no other windows open.</span></span><br><span class="line">  <span class="keyword">if</span> (win === <span class="literal">null</span>) &#123;</span><br><span class="line">    createWindow();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// In this file you can include the rest of your app's specific main process</span></span><br><span class="line"><span class="comment">// code. You can also put them in separate files and require them here.</span></span><br></pre></td></tr></table></figure>
+<h2 id="Running-the-app"><a href="#Running-the-app" class="headerlink" title="Running the app"></a>Running the app</h2><ul>
+<li><p>Open a terminal and move to the Angular project, and run <code>npm run electron:start</code> to start the Angular application.</p>
+</li>
+<li><p>Open a second terminal and move to the <code>electron</code> folder inside the project, and run <code>electron .</code> to start the electron application.</p>
+</li>
+</ul>
+<p>You should see a window with the Angular app running inside of it.  </p>
+<h1 id="Moving-forward"><a href="#Moving-forward" class="headerlink" title="Moving forward"></a>Moving forward</h1><p>We now have a very simple Angular application running inside of the Electron renderer process. If we modify something of either, the Angular app, or the Electron app, we need to close the Electron window and run the <code>electron .</code> again. This could be optimize using plugins and build systems, but this is the out-the-box behavior of Electron. </p>
+<p>You may notice that the entry file of the Electron application is written in vanilla Javascript. This is because Electron runs only vanilla Javascript, and in order to run other language such Typescript, you should use a plugin, such <code>ts-node</code>, or a build system.</p>
+<h1 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h1><ul>
+<li><a href="/integrating-an-angular-cli-application-with-electron-34mi">The seed</a></li>
+<li><a href="/electron-with-typescript-using-ts-node-8oi">Electron with Typescript</a></li>
+<li><a href="/integrating-an-angular-cli-application-with-electron---the-ipc-4m18">The IPC</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://michaeljota.github.com/integration-an-angular-cli-application-with-electron-the-seed/" data-id="cjd5v7wbk0004cctzlfwcbfy4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/electron/">electron</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-finally-we-have-a-finally-but-we-already-had-one" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/finally-we-have-a-finally-but-we-already-had-one/" class="article-date">
+  <time datetime="2018-01-06T16:00:00.000Z" itemprop="datePublished">2018-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/finally-we-have-a-finally-but-we-already-had-one/">Finally! We Have a Finally (But We Already Had One)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://78.media.tumblr.com/625dcb0918e78fdf75030507f8085039/tumblr_n05mepfYgB1tq4of6o1_500.gif" alt="Promise"></p>
+<p>I like to dig around the new features that are coming to JS, even when most of the time we need to transpile them down, you should know that you can, and should, deploy to production <a href="https://philipwalton.com/articles/deploying-es2015-code-in-production-today" target="_blank" rel="noopener">using ES2015+ syntax today</a>. In the <a href="https://github.com/tc39/proposals/blob/master/README.md" target="_blank" rel="noopener">current list of proposals in stage-3</a>, was something that catch my attention. That was the <a href="https://github.com/tc39/proposal-promise-finally" target="_blank" rel="noopener">Promise.prototype.finally</a>.</p>
+<h1 id="FINALLY"><a href="#FINALLY" class="headerlink" title="FINALLY!"></a>FINALLY!</h1><p>So we now have a finally method into Promise. A finally method will be called always, and doesn’t care if the Promise was fulfilled or rejected. It will no alter the value of the resolve promise, but could reject the promise with a new reason. Currently there are several implementations in other future libraries in NPM, as in the current proposal is written. However this, soon to be standard, will allow to use the method in evergreen browsers.</p>
+<h1 id="When-to-use-it"><a href="#When-to-use-it" class="headerlink" title="When to use it"></a>When to use it</h1><p>The finally statement is really common in programming, specially when dealing with external connections that must be closed even in an unsuccessful operation, such as reading external files or database operations. Such connections need to be closed, and doesn’t matter if the operation was successful or not, we just need to close the connection.</p>
+<h1 id="How-to-use-it"><a href="#How-to-use-it" class="headerlink" title="How to use it"></a>How to use it</h1><p>The finally method is really straightforward, every promise will have one, and it will return a promise as well, so you could chain as usual. </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span></span><br><span class="line">    .resolve(<span class="number">3</span>)</span><br><span class="line">    .finally(</span><br><span class="line">        () =&gt; &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'FINALLY!'</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    .then(</span><br><span class="line">        value =&gt; <span class="built_in">console</span>.log(value) <span class="comment">// Output: 3</span></span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
+<p>As you may notice, resolving a value in the finally, have not effects. However, you should know that, per specification, a Promise can be rejected from a finally method.<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span></span><br><span class="line">    .resolve(<span class="number">3</span>)</span><br><span class="line">    .finally(</span><br><span class="line">        () =&gt; &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'FINALLY!'</span>);</span><br><span class="line">            <span class="keyword">throw</span> <span class="number">4</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    .then(</span><br><span class="line">        value =&gt; <span class="built_in">console</span>.log(value) <span class="comment">// Does not print</span></span><br><span class="line">    ).catch(</span><br><span class="line">        error =&gt; <span class="built_in">console</span>.log(error) <span class="comment">// Output: 4</span></span><br><span class="line">    );</span><br></pre></td></tr></table></figure></p>
+<h1 id="How-to-use-it-today"><a href="#How-to-use-it-today" class="headerlink" title="How to use it, today"></a>How to use it, today</h1><p>Well, you could use one of the different future libraries, such <a href="https://github.com/petkaantonov/bluebird" target="_blank" rel="noopener">Bluebird</a>, or the finally shim and use it with ES2017, that have a new syntax to deal with promises, <code>async</code>/<code>await</code>. I really love them, and they are very handy to work with promises, writing code that looks very clean. This couple makes every function, an asynchronous function, that are resolved as a regular Promise. So, you could just do finally after the declaration of the async function.<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> promiseA = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">await</span> <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line">promiseA.finally(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'The promise either was a success or a failure'</span>));</span><br></pre></td></tr></table></figure></p>
+<p>The finally method will be called, as per the specification. But, what if we need to <code>try</code>/<code>catch</code> inside the async function (That you should). Then, we could use the <code>finally</code> statement.<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> aSuperUsefulPromise = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">await</span> PromiseThatCouldThrow();</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(error);</span><br><span class="line">    <span class="comment">// We don't modify the promise here, just catch the error and handle it.</span></span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">await</span> <span class="number">4</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">await</span> aSuperUsefulPromise()) <span class="comment">// Outputs: 4</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="https://media.giphy.com/media/CDJo4EgHwbaPS/giphy.gif" alt="Wait... What?"><br>Well, when dealing with <code>try</code>/<code>catch</code>/<code>finally</code> you CAN modify the value of a resolved promise. And this is really important to notice and understand, as you may expect a different result. So, you should never return inside a finally statement. It maybe weird to you, cause JS have a implicit return statement, but that return will be called after the finally statement, not before.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>The <code>finally</code> method in Promises will be something, but we could accomplish more or less the same behavior using current <code>try</code>/<code>catch</code>/<code>finally</code> statements, we need to be careful though. </p>
+<p>I learn a lot writing this article, and I hope that you could understand a little more about the new <code>finally</code> method. Thanks you for reading, and as usual, if I made a mistake, please, guide me in the comments below, I will deeply appreciate it. </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://michaeljota.github.com/finally-we-have-a-finally-but-we-already-had-one/" data-id="cjd5v7wby0006cctz64qd1gsk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/es2018/">es2018</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-pages-a-component-convention-for-angular-s-pages" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/pages-a-component-convention-for-angular-s-pages/" class="article-date">
+  <time datetime="2017-10-08T16:00:00.000Z" itemprop="datePublished">2017-10-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/pages-a-component-convention-for-angular-s-pages/">Pages: A Component Convention for Angular&#39;s Pages</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Previously-on…"><a href="#Previously-on…" class="headerlink" title="Previously on…"></a>Previously on…</h1><ul>
+<li><a href="/widgets-and-components-for-angular-2-and-up">Widgets introduction</a></li>
+<li><a href="/input-set-pattern-for-widgets-in-angular">Input-set “pattern” in Widgets</a></li>
+<li><a href="/readonly-inputs-for-primitives-properties-in-widgets-for-angular">Read-only primitives in Widgets</a></li>
+</ul>
+<h1 id="And-now…"><a href="#And-now…" class="headerlink" title="And now…"></a>And now…</h1><p>Ok, boys, girls, another people that thinks that you can decide wherever pasta is rice just cause it defines it self as such, right now I had published two of my ways to manages components. I currently separate my angular components into 3 categories, based on what their concern is, widgets, to manage the look of them, components, to manage the behavior of them, and as I will introduce to you today, pages, to manage well, pages. </p>
+<h1 id="What-a-page-is"><a href="#What-a-page-is" class="headerlink" title="What a page is?"></a>What a <em>page</em> is?</h1><p>A page is this. What you are looking, what the user will look. Most of the time will be a component that will no be referenced by its <code>selector</code>, but by the router at a certain url. And that its the is first difference between a page component and a regular component.</p>
+<ul>
+<li>A page can contain another pages</li>
+</ul>
+<p>For sure. But, they all should be represented by a url state, nothing more, nothing else. They should never be reference by it’s <code>selector</code>, cause, then I won’t be much of a page, would it?</p>
+<ul>
+<li>A page should not have a <code>selector</code></li>
+</ul>
+<p>If the <code>@Component</code> decorator does not have a <code>selector</code> them is unlikely to reference a page by such. I think is just safer to not do so. </p>
+<ul>
+<li>A page should not have a behavior</li>
+</ul>
+<p>Much as our AppComponent, or wherever you call the entry component of your application, the logic there should be minimum. Most of the AppComponent delegates the behavior to their inner components, the router, and the services.</p>
+<ul>
+<li>A page must have components only</li>
+</ul>
+<p>Well, you have to show something after all. But, why components only? Well, it happens that if you put a widget there, them is more likely to put the logic of that widget inside your page, and it should not be there. </p>
+<ul>
+<li>A page should have end-to-end test</li>
+</ul>
+<p>This is what you user will interact, so I think is logic to put aside this your e2e for that page. If your components should have a unit test beside them, and your widgets should… I think they should have a unit test as well, then your pages should contain nothing more than e2e tests. After all you test all your components. Right? RIGHT? ‘Cause I don’t.</p>
+<h1 id="A-page"><a href="#A-page" class="headerlink" title="A page"></a>A page</h1><p>What would be life without examples to copy-paste? Well, I’m sorry, this is just too useless to be copy-pasted. But still, I hope this idea keeps in you mind. </p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;my-add-todo&gt;&lt;/my-add-todo&gt;</span></span><br><span class="line"><span class="string">    &lt;my-visible-todo-list&gt;&lt;/my-visible-todo-list&gt;</span></span><br><span class="line"><span class="string">    &lt;my-filter-buttons-widget&gt;&lt;/my-filter-buttons-widget&gt;</span></span><br><span class="line"><span class="string">  `</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TodoPage &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>In this example we can see how a todo page would be. When you navigate to <code>/todo</code> url you would know exactly what to expect, only the components you previously defined, with the behavior you put into them. </p>
+<h1 id="Thanks-you"><a href="#Thanks-you" class="headerlink" title="Thanks you!"></a>Thanks you!</h1><p>As always, I hope you liked this post, and I’m very thankful that you read all of it. If you have comments about it, ideas or just want to say that this should not be like this, please, use the comment section below. I’m looking forward to read you too. </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://michaeljota.github.com/pages-a-component-convention-for-angular-s-pages/" data-id="cjd5v7wbs0005cctz4be1nd54" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/components/">components</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/typescript/">typescript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-readonly-input-for-primitive-properties-in-angular-s-widgets" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/readonly-input-for-primitive-properties-in-angular-s-widgets/" class="article-date">
+  <time datetime="2017-08-27T16:00:00.000Z" itemprop="datePublished">2017-08-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/readonly-input-for-primitive-properties-in-angular-s-widgets/">Readonly Input for Primitive Properties in Angular&#39;s Widgets</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Hi! It’s me again. Today I’m releasing the first stable version of my Pomodoro application. I made it using Angular 4, and Electron. While I was developing it, I try to use TDD, use a ngrx/Store, and separate the components of <a href="/widgets-and-components-for-angular-2-and-up">the Widgets</a>, and use <a href="/input-set-pattern-for-widgets-in-angular">the @Input-set, and template-get</a> for manage data. </p>
+<p>But I have to say it, I failed, I failed big time. First at all, I come to realize why TDD is a design pattern, if you don’t have defined what you want to do, you can’t test first. I try to use the Store, but at the end I managed all the state from one component. But I did use Widgets to display the content, where I could. Well, this is actually the first application I do by my self, so, don’t be mean. I’ve been working with AngularJS since 1.2, and with Angular since RC5, but I never had to design the functionality of the app, the business logic was a piece of the company I’d worked on. </p>
+<p>However, where I failed the most was at using the @Input-set/template-get duo. I mean, I could use them, but I most manage primitives values, so why bother? Still, one advantage of this approach is that you could treat the values as inmutables, because you set it somewhere, and return it somewhere else, there is no place to side effects there. </p>
+<p>So how to deal with primitives, without written unnecessary code lines, and still maintaining the immutability? Well, Typescript 2 brought a nice feature to deal with this <code>readonly modifier</code>. You can read more about that <a href="https://basarat.gitbooks.io/typescript/docs/types/readonly.html" target="_blank" rel="noopener">here</a>. It is different from a const, cause the assignment check it’s doing in compilation time, instead of runtime. Meaning, that even if you set your property to <code>readonly</code>, in runtime in can be written as many times as needed. But this approach allows us to be sure that the property will be only written by the inputed value, and we ain’t going to modify it.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">enum</span> Cicle &#123;</span><br><span class="line">  <span class="comment">// Cicle values</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  <span class="comment">// Component definitions</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> StartButtonWidget &#123;</span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">public</span> readonly cicle: Cicle;</span><br><span class="line">  <span class="meta">@Output</span>()</span><br><span class="line">  <span class="keyword">public</span> onClick: EventEmitter&lt;Cicle&gt; = <span class="keyword">new</span> EventEmitter&lt;Cicle&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">get</span> label(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="comment">// Returns a strings from the value of the cicle</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> emit(): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.onClick.emit(<span class="keyword">this</span>.cicle);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>As you can see, using a readonly property for our input primitives allow us to be sure about how and when it’s the property changing. But, I still think this have a disadvantage. If you need to input a value, and display another value, you could accidentally access the property in a wrong way. And I don’t mean you exactly, but the team you work in. With the <code>@input-set/template-get</code> the intentions you have when you write are clears, but with this, you have to be sure that the primitive is going to be use the way you expect. Documentation would be do it, I think.</p>
+<p>This is just another way to deals with properties in Typescript and Angular framework, I’m sure that you have many ways more, and I would like to read about them in the comments bellow.</p>
+<p>As always, thanks for reading, and I hope you’d liked. </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://michaeljota.github.com/readonly-input-for-primitive-properties-in-angular-s-widgets/" data-id="cjd5v7wch000bcctz74gv9mem" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/components/">components</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/widgets/">widgets</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-input-set-pattern-for-angular-s-widgets" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/input-set-pattern-for-angular-s-widgets/" class="article-date">
+  <time datetime="2017-05-28T16:00:00.000Z" itemprop="datePublished">2017-05-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/input-set-pattern-for-angular-s-widgets/">@Input-Set Pattern for Angular&#39;s Widgets</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>If you read my last post, you should know what a Widget is, if you haven’t already, do it now, I’ll <em>await</em>. </p>
+<p><code>await Reader.read(&#39;</code><a href="/widgets-and-components-for-angular/">Widgets and components</a><code>&#39;);</code></p>
+<p>Now you know what Widgets should be. I tried to keep it simple for the first implementation, but I’m really turning my head around this. The thing is, React is a JavaScript pure framework and with JSX allow us to do things that we can’t made with plain HTML templates, nevertheless, Typescript allow us for things that JavaScript does not, at the very least, it seems to allow that. Like <em>private</em> properties. With that in mind, I’ll try to explain why you should use private properties inside a Widget and how to manage the data entry in a better way.</p>
+<h2 id="The-situation"><a href="#The-situation" class="headerlink" title="The situation"></a>The situation</h2><p>Following the comparative with React from the last post, when the <code>props</code> are send to a <code>component</code>, most of the the time we are getting it following the destructive pattern, allowing to do things like:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">interface IUser &#123;</span><br><span class="line">  firstname: string;</span><br><span class="line">  lastname: string;</span><br><span class="line">  age: number;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export function usersList(&#123;users = []&#125; : &#123; IUser[] &#125;) &#123;</span><br><span class="line">  return (&lt;ul&gt;</span><br><span class="line">    users.map(user =&gt; userDetails(user));</span><br><span class="line">  &lt;/ul&gt;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function userDetails(&#123;firstname, lastname, age&#125;: IUser) &#123;</span><br><span class="line">    return (&lt;li&gt;&lt;span&gt;&#123;firstname&#125; &#123;lastname&#125;&lt;/span&gt;have &#123;age&#125; years old&lt;/li&gt;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>I think this looks good, because it allow us to be explicit about what we want to show, and how to show it.</p>
+<p>In Angular, we just <code>@Input</code> the data that we want to get from the outside.<br><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// user.ts</span></span><br><span class="line"><span class="keyword">interface</span> IUser &#123;</span><br><span class="line">  firstname: <span class="built_in">string</span>;</span><br><span class="line">  lastname: <span class="built_in">string</span>;</span><br><span class="line">  age: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// user-list.widget.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-user-list'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;ul&gt;</span></span><br><span class="line"><span class="string">    &lt;li *ngFor="let user of users"&gt;</span></span><br><span class="line"><span class="string">      &lt;my-user-details [user]=user&gt;&lt;my-user-details&gt;</span></span><br><span class="line"><span class="string">    &lt;/li&gt;</span></span><br><span class="line"><span class="string">  &lt;/ul&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UserListWidget &#123;</span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">public</span> users: IUser[];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// user-details.widget.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-user-details'</span>,</span><br><span class="line">  template: </span><br><span class="line">    <span class="string">`&lt;span&gt;&#123;&#123;user.firstname&#125;&#125; &#123;&#123;user.lastname&#125;&#125;&lt;/span&gt; has &#123;&#123;user.age&#125;&#125; years old`</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UserDetailsWidget &#123;</span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">public</span> user: IUser;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>This is right, as Widgets are suppose to display data, and they should <em>only</em> concern should be how to display that data. But we need a better way to organize how we show that data correctly in the template.</p>
+<p>I like the approach from React in that sense. Don’t get me wrong, I love Angular. But JSX allow us to do something nicer than dotter properties, destructive assignment.</p>
+<h2 id="Solution-proposal"><a href="#Solution-proposal" class="headerlink" title="Solution proposal"></a>Solution proposal</h2><p>Now that is being clearer that React have a somewhat advantage above us, we as Angular developers need to propose a solution to be even, using features that are being bringed by Typescript, <em>private</em> properties. I know that Typescript is compiled to JavaScript, and JavaScript doesn’t have such things, but, we’ll do as we don’t care.<br>Also, we will use a ES6 <code>set</code> feature. This allow us to have properties that can be set, but cannot be read.</p>
+<h3 id="Introducing-input-set"><a href="#Introducing-input-set" class="headerlink" title="Introducing @input set"></a>Introducing <code>@input set</code></h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-user-details'</span>,</span><br><span class="line">  template: </span><br><span class="line">    <span class="string">`&lt;span&gt;&#123;&#123;firstname&#125;&#125; &#123;&#123;lastname&#125;&#125;&lt;/span&gt; has &#123;&#123;age&#125;&#125; years old`</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UserDetailsWidget &#123;</span><br><span class="line">  <span class="keyword">private</span> _user: IUser;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">set</span> user(value: User): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>._user = value;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>OK. We learn we can set to private properties, but that does not quite allow us to show the properties in the template. Technically JavaScript only have properties, so we could bind to the private property, but we should <em>never</em> bind a private property to the template, as the AOT compiler would throw.</p>
+<h3 id="Introducing-template-get"><a href="#Introducing-template-get" class="headerlink" title="Introducing template get"></a>Introducing <code>template get</code></h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-user-details'</span>,</span><br><span class="line">  template: </span><br><span class="line">  <span class="string">`&lt;span&gt;&#123;&#123;firstname&#125;&#125; &#123;&#123;lastname&#125;&#125;&lt;/span&gt; has &#123;&#123;age&#125;&#125; years old`</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UserDetailsWidget &#123;</span><br><span class="line">  <span class="keyword">private</span> _user: IUser;</span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">set</span> user(value: IUser) &#123;</span><br><span class="line">    <span class="keyword">this</span>._user = value;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">get</span> firstname(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._user.firstname;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">get</span> lastname(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._user.lastname;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">get</span> age(): age &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._user.age;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>This actually works as expected. Allowing a better control over the data that are being displayed in the template, and how to expose it. Also, it would even allow us to do certain things, to maintain the code in a better way.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-user-details'</span>,</span><br><span class="line">  template: </span><br><span class="line">  <span class="string">`&lt;span&gt;&#123;&#123;fullname&#125;&#125;&lt;/span&gt; has &#123;&#123;age&#125;&#125; years old`</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UserDetailsWidget &#123;</span><br><span class="line">  <span class="keyword">private</span> _user: IUser;</span><br><span class="line">  <span class="meta">@Input</span>()</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">set</span> user(value: IUser) &#123;</span><br><span class="line">    <span class="keyword">this</span>._user = value;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">get</span> fullname(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;this._user.firstname&#125;</span> <span class="subst">$&#123;this._user.lastname&#125;</span>`</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">get</span> age(): <span class="built_in">number</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._user.age;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>However, <code>template get</code> as showed here have certain issues, but I’ll explain everything about those issues properly in other post.</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>For this, I made a little Plunker that expose the use case. <a href="http://plnkr.co/edit/qQMk8kCH0wWp3yznE6MX?p=preview" target="_blank" rel="noopener">Here</a></p>
+<h2 id="Thanks-you"><a href="#Thanks-you" class="headerlink" title="Thanks you"></a>Thanks you</h2><p>As always, thank you for reading this long. I hope you like it, and I am really looking forward to read your thoughts in the comments section. </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://michaeljota.github.com/input-set-pattern-for-angular-s-widgets/" data-id="cjd5v7wc60008cctzseztjs01" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/components/">components</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/widgets/">widgets</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-widgets-and-components-for-angular" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/widgets-and-components-for-angular/" class="article-date">
+  <time datetime="2017-03-10T04:00:00.000Z" itemprop="datePublished">2017-03-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/widgets-and-components-for-angular/">Widgets and Components for Angular 2 and Up</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>If you are coming from React, the React community as develop some patterns that made easy and simple to develop apps with this framework. One of this patterns is the <em>smart</em> and <em>dumb</em> component, or <em>container</em> and <em>component</em>. This keeps a separation between how a component should display the data, and how a component actually manage the data. If you want more about this, there are plenty of articles about it, this is not what I’m writing about.</p>
+<h2 id="Situation"><a href="#Situation" class="headerlink" title="Situation"></a>Situation</h2><p>The actual name for a piece of web page according to the standard it’s “web component”, so one might think that calling <em>component</em> to the piece of code that shows the data it’s the most accurate way to name them. But…</p>
+<p><img src="https://i.imgflip.com/1l5mqr.jpg" alt="I reject nature"></p>
+<p>Angular community had develop their own way of thinking about what a component is, and in the Angular community I had see so many times that a <em>component</em> have a <em>behavior</em>. </p>
+<blockquote>
+<p>What?! This is just insane. A component should concern only about how to display the data, no how to manage it.</p>
+</blockquote>
+<p>Well, it is true. The only fact that Angular components are called <em>Components</em> it’s one of the examples to show my point of view. Still, we need some way to manage the display of the data. </p>
+<h2 id="Solution-proposal"><a href="#Solution-proposal" class="headerlink" title="Solution proposal"></a>Solution proposal</h2><p>I know this would be only another solution proposal, and mine doesn’t actually adds anything to current implementation, it’s just syntactic sugar for the same thing.</p>
+<h3 id="Introducing-Widgets"><a href="#Introducing-Widgets" class="headerlink" title="Introducing Widgets"></a>Introducing Widgets</h3><p>So… Widgets? What <em>should</em> they be? I propose <em>Widgets</em> to name anything that only should concern about how to display something. And this it’s something that Angular it’s great at, separation. I’m not saying that React it’s bad about it, but I think that the Angular team had a better approach to this issue.</p>
+<p>Ideally a Widget should have only <code>@input</code>s and <code>@output</code>s. That’s all. A Widget had to be made to show info, and it have to be a component that reflects that in their code. There should be no logic inside a Widget, but the logic that a Widget need to show the data that is being inputed. </p>
+<p>I also think about the way that the data should be managed inside the Widget, but that would be for another day (Or you can read this <a href="https://github.com/mgechev/codelyzer/issues/222" target="_blank" rel="noopener">issue</a>)</p>
+<h3 id="What-widgets-should-be"><a href="#What-widgets-should-be" class="headerlink" title="What widgets should be"></a>What widgets should be</h3><ul>
+<li>Widgets should be the presentation components of and Angular application.</li>
+<li>Widgets should be logicless.</li>
+<li>Widgets should be concern about the style of their own data.</li>
+</ul>
+<h2 id="Questions"><a href="#Questions" class="headerlink" title="Questions"></a>Questions</h2><h5 id="Widgets-are-just-components"><a href="#Widgets-are-just-components" class="headerlink" title="Widgets are just components?"></a>Widgets are just <em>components</em>?</h5><p>Yes. :). No more, not less. Just <em>components</em>. They have to show information, but they should not care about how the information it’s being provide for them. </p>
+<h5 id="Why-another-name-then"><a href="#Why-another-name-then" class="headerlink" title="Why another name then?"></a>Why another name then?</h5><p>As I said, <em>component</em> in Angular community had been used for development of piece of web pages that <em>manage</em> information. </p>
+<h5 id="Why-called-them-widgets"><a href="#Why-called-them-widgets" class="headerlink" title="Why called them widgets?"></a>Why called them <em>widgets</em>?</h5><p>Cause, after all, <em>widgets</em> actually are made to show information, so it’s seems logical to call them that way.</p>
+<h2 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h2><p>There should not be one motivation for use a name proposal without an example, and that’s what I’m going to give you. </p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; ITodoItem &#125; <span class="keyword">from</span> <span class="string">'./../../models'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-todo-list-widget'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;ul&gt;</span></span><br><span class="line"><span class="string">    &lt;my-todo *ngFor="let todo of todoList;trackBy:todo?.id"</span></span><br><span class="line"><span class="string">      [todo]="todo"</span></span><br><span class="line"><span class="string">    &gt;&lt;/my-todo&gt;</span></span><br><span class="line"><span class="string">  &lt;/ul&gt;</span></span><br><span class="line"><span class="string">  `</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TodoListWidget &#123;</span><br><span class="line">  <span class="meta">@Input</span>() <span class="keyword">public</span> todoList: ITodoItem[];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>This is a simple case of use. I’ll try to explain the code.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; ITodoItem &#125; <span class="keyword">from</span> <span class="string">'./../../models'</span>;</span><br></pre></td></tr></table></figure>
+<p>First of all, imports. From <code>@angular/core</code> we import <code>input</code> and <code>component</code> decorators. Remember, everything in Angular it’s a decorator, so are Widgets, that name it’s just sugar. There is not a <code>Widget</code> decorator, and I don’t think that it should be one. From a model folder, the import of the <code>Item</code> model. </p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'my-todo-list-widget'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;ul&gt;</span></span><br><span class="line"><span class="string">    &lt;my-todo *ngFor="let todo of todoList;trackBy:todo?.id"</span></span><br><span class="line"><span class="string">      [todo]="todo"</span></span><br><span class="line"><span class="string">    &gt;&lt;/my-todo&gt;</span></span><br><span class="line"><span class="string">  &lt;/ul&gt;</span></span><br><span class="line"><span class="string">  `</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>So we decorate. I use the suffix <code>widget</code> for the selector, cause I had a component with the same name. So if you can name things better than I do, you should not need that. Also, the template, the less, the better. I think that if your template it’s less than 10 lines, you should inline it. But, it’s up to you. What is important it’s to define all the display behavior here.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TodoListWidget &#123;</span><br><span class="line">  <span class="meta">@Input</span>() <span class="keyword">public</span> todoList: ITodoItem[];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Finally, we declare the class. This is the important part. As you can see, there is not logic here. It’s just a class requesting an <code>input</code> property and nothing else. </p>
+<h4 id="More-examples"><a href="#More-examples" class="headerlink" title="More examples"></a>More examples</h4><p>If you want a couple of more examples about Widgets, checkout my repo <a href="https://github.com/michaeljota/angular2-ultimate-starter" target="_blank" rel="noopener">angular2-ultimate-starter</a>. This is based of <code>AngularClass</code> starter, but I added <code>ngrx/store</code> implementation, and a couple patters borrow from React, as <code>Widgets</code>.</p>
+<h2 id="Thanks-you"><a href="#Thanks-you" class="headerlink" title="Thanks you"></a>Thanks you</h2><p>This is all for now. This is my first post, like ever, about Angular. I hope you enjoy this, and for anything you have to say about this, I’m looking forward to read your comments. Cheers and happy coding!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://michaeljota.github.com/widgets-and-components-for-angular/" data-id="cjd5v7wcb0009cctzjov1a06f" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/components/">components</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webcomponents/">webcomponents</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/widgets/">widgets</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/angular/">angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/components/">components</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/electron/">electron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es2018/">es2018</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webcomponents/">webcomponents</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/widgets/">widgets</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/angular/" style="font-size: 20px;">angular</a> <a href="/tags/components/" style="font-size: 17.5px;">components</a> <a href="/tags/electron/" style="font-size: 15px;">electron</a> <a href="/tags/es2018/" style="font-size: 10px;">es2018</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/typescript/" style="font-size: 12.5px;">typescript</a> <a href="/tags/webcomponents/" style="font-size: 10px;">webcomponents</a> <a href="/tags/widgets/" style="font-size: 15px;">widgets</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/integration-an-angular-cli-application-with-electron-the-ipc/">Integration an Angular-CLI Application With Electron - the IPC</a>
+          </li>
+        
+          <li>
+            <a href="/electron-with-typescript-using-ts-node/">Electron With Typescript Using Ts-Node</a>
+          </li>
+        
+          <li>
+            <a href="/integration-an-angular-cli-application-with-electron-the-seed/">Integration an Angular-CLI Application With Electron - the Seed</a>
+          </li>
+        
+          <li>
+            <a href="/finally-we-have-a-finally-but-we-already-had-one/">Finally! We Have a Finally (But We Already Had One)</a>
+          </li>
+        
+          <li>
+            <a href="/pages-a-component-convention-for-angular-s-pages/">Pages: A Component Convention for Angular&#39;s Pages</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Michael De Abreu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

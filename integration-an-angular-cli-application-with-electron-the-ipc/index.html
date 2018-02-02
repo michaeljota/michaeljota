@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Integration an Angular-CLI Application With Electron - the IPC | michaeljota</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="A story about how to integrate an angular-cli application with Electron using IPC">
+<meta name="keywords" content="angular,electron,node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Integration an Angular-CLI Application With Electron - the IPC">
+<meta property="og:url" content="http://michaeljota.github.com/integration-an-angular-cli-application-with-electron-the-ipc/index.html">
+<meta property="og:site_name" content="michaeljota">
+<meta property="og:description" content="A story about how to integrate an angular-cli application with Electron using IPC">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://thepracticaldev.s3.amazonaws.com/i/xfyeh5gf2dvz66o54qdk.png">
+<meta property="og:updated_time" content="2018-02-01T23:17:21.488Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Integration an Angular-CLI Application With Electron - the IPC">
+<meta name="twitter:description" content="A story about how to integrate an angular-cli application with Electron using IPC">
+<meta name="twitter:image" content="https://thepracticaldev.s3.amazonaws.com/i/xfyeh5gf2dvz66o54qdk.png">
+  
+    <link rel="alternate" href="/atom.xml" title="michaeljota" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">michaeljota</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">A world about my thoughs</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://michaeljota.github.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-integration-an-angular-cli-application-with-electron-the-ipc" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/integration-an-angular-cli-application-with-electron-the-ipc/" class="article-date">
+  <time datetime="2018-01-29T16:00:00.000Z" itemprop="datePublished">2018-01-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Integration an Angular-CLI Application With Electron - the IPC
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Previously-on…"><a href="#Previously-on…" class="headerlink" title="Previously on…"></a>Previously on…</h1><p>In the previous sections and stories, I explained how to integrate an Angular-CLI generated application with Electron, and also how to write the same Electron application in Typescript. So far, this would allow a simple Angular application being packed as a Electron application, but there is no way for us to interact with Electron’s main thread.</p>
+<ul>
+<li><a href="/integrating-an-angular-cli-application-with-electron-the-seed">The seed</a></li>
+<li><a href="/electron-with-typescript-using-ts-node">Electron with Typescript</a></li>
+</ul>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>In this post I’ll try to explain how to get a real integrating between Angular and Electron, and be able to communicate using Electron’s IPC.</p>
+<h2 id="What-is-IPC"><a href="#What-is-IPC" class="headerlink" title="What is IPC?"></a>What is IPC?</h2><p>IPC is the inter-process communication module of Electron. With that you can send messages between your web application and the main thread application. To send and receive messages in the main thread you would have to use the <a href="https://electronjs.org/docs/api/ipc-main" target="_blank" rel="noopener">ipcMain</a> function property. Likewise, for the renderer process you would like to use the <a href="https://electronjs.org/docs/api/ipc-renderer" target="_blank" rel="noopener">ipcRenderer</a>.</p>
+<h2 id="How-to-use-ipcMain"><a href="#How-to-use-ipcMain" class="headerlink" title="How to use ipcMain?"></a>How to use ipcMain?</h2><p>Use ipcMain is a simple as require it, and use one of the functions that are able for us.<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ipcMain &#125; <span class="keyword">from</span> <span class="string">'electron'</span>;</span><br><span class="line"></span><br><span class="line">ipcMain.on(<span class="string">'ping'</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">    logger(<span class="string">'ping'</span>); <span class="comment">// Assume there is a logger function that would display 'ping' in console. console object does not work as-is, and it's not so easy to configure it.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>With that, the application will be listening a <code>&#39;ping&#39;</code> event, and will print <code>ping</code> in the console. Easy peasy.</p>
+<h2 id="How-to-normally-use-ipcRenderer"><a href="#How-to-normally-use-ipcRenderer" class="headerlink" title="How to (normally) use ipcRenderer?"></a>How to (normally) use ipcRenderer?</h2><p>In a normal scenario, a simple <code>require(&#39;electron&#39;).ipcRenderer</code> would give us access to the IPC in the renderer thread. So, following the previous example, we could do something like:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; ipcRenderer &#125; = <span class="built_in">require</span>(<span class="string">'electron'</span>);</span><br><span class="line"></span><br><span class="line">ipcRenderer.send(<span class="string">'ping'</span>);</span><br></pre></td></tr></table></figure>
+<p>This will invoke the callback function in the main thread. </p>
+<p>But, this won’t work in the Angular-CLI application. Angular-CLI underneath uses Webpack, and thus the latter will find the <code>require</code> <em>key</em> word, interpret as a call for the Node.js’ <code>require</code> function, and will try to resolve the ‘electron’ module. </p>
+<h2 id="A-Story-about-two-requires"><a href="#A-Story-about-two-requires" class="headerlink" title="A Story about two requires"></a>A Story about two <code>require</code>s</h2><p><code>require</code> as been with us for a while, since the first version of Node back in 2008, almost 10 years. But still is one of the most misunderstand functions in modern web development. With the integration of <code>import</code> and <code>export</code> keywords in Node, several articles was written to explain how the <code>require</code> function currently works. TL;DR: A <code>require</code> function is injected for every file, allowing Node to resolve the dependencies. Later, module builders will look for <code>import</code> and <code>require</code> and will try to resolve modules, assuming that’s what you want. </p>
+<p>So, now that we know that <code>require</code> is actually a function injected by Node, then how is <code>require</code> able to work in Electron renderer process. You may guessed it, Electron injects its own version of <code>require</code> function in the global scope of the renderer process when it loads the page. So, although it may seems like the same function, it is not. </p>
+<h2 id="How-to-use-ipcRenderer-in-a-Angular-CLI-application-Or-any-application-bundle-with-Webpack"><a href="#How-to-use-ipcRenderer-in-a-Angular-CLI-application-Or-any-application-bundle-with-Webpack" class="headerlink" title="How to use ipcRenderer in a Angular-CLI application? (Or any application bundle with Webpack)"></a>How to use ipcRenderer in a Angular-CLI application? (Or any application bundle with Webpack)</h2><p>To use <code>ipcRenderer</code> in our Angular-CLI app, we will leverage on the global scope. No, we won’t call ipcRenderer in the global context, although we could make this works, it’s not ideal. But I just told that <code>require</code> is a function that Electron injects in the global context. So, can we just use <code>require</code>? No. That’s because, as I also told, Webpack will try to resolve the module requirement. There is actually another way to access a global variable, that’s with the <code>window</code> object. The <code>window</code> object by default will have all the global variables, including <code>require</code>.</p>
+<p>So we can just use <code>window.require</code> in any part of our application and it would work as expected. In this context, you cannot use <code>window.require</code> to require any module in your Angular-CLI application, but you can load any module that you had set in your Electron application.</p>
+<h2 id="Writing-the-service"><a href="#Writing-the-service" class="headerlink" title="Writing the service"></a>Writing the service</h2><p>For this example we will expose the <code>ipc</code> as an Angular service, and will create it using angular-cli. We follow the guide about <a href="https://github.com/angular/angular-cli/wiki/generate-service" target="_blank" rel="noopener">services</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate service ipc -m app</span><br></pre></td></tr></table></figure>
+<p>This will create our service, and update our <code>app.module</code> to include it in the Angular application.</p>
+<p>Then, we write the code. We start by importing the IpcRenderer interface from electron module</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; IpcRenderer &#125; <span class="keyword">from</span> <span class="string">'electron'</span>;</span><br></pre></td></tr></table></figure>
+<p>But, we don’t have any Electron module in our Angular project, how will it be resolved? We’ll, actually we don’t need to have the Electron module in our Angular project, because as Typescript resolver work, it will look in <code>node_modules</code> in folders that are children from ours project. If you want to be extra safe, or if for any reason this is not a desire behavior, you could install the <code>@types</code> of electron, and it won’t load the hole package.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @types/electron</span><br></pre></td></tr></table></figure>
+<p>Next, we add a reference property inside the class to save the ipcRenderer function when we load it.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> _ipc: IpcRenderer | <span class="literal">undefined</span>;</span><br></pre></td></tr></table></figure>
+<p>It’s important to typed it as <code>IpcRenderer | undefined</code> for compile the code in strict mode, as we may or may not be able to load the ipcRenderer. We now write the constructor, to assign the <code>_ipc</code> in load time. </p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">window</span>.require) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>._ipc = <span class="built_in">window</span>.require(<span class="string">'electron'</span>).ipcRenderer;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      <span class="keyword">throw</span> e;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.warn(<span class="string">'Electron\'s IPC was not loaded'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>As you can see, we will first check if <code>window</code> object has a <code>require</code> property. With this we will assume we are inside Electron, then we will <code>try</code> to <code>require(&#39;electron&#39;)</code>, if for any reason it doesn’t work it just throw an error, and the property <code>_ipc</code> will be undefined. Checking require in the <code>window</code> object will allow us to run the service in a regular browser context, in that case the <code>_ipc</code> won’t have a assignment value and will be <code>undefined</code>.</p>
+<p>You should have Typescript complaining about <code>window</code> not having a <code>require</code> property, so we need to update the project’s typings file. Open <code>/src/typings.d.ts</code> and update with the following lines:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Window &#123;</span><br><span class="line">  <span class="built_in">require</span>: NodeRequire;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Now, Typescript shouldn’t be annoying us. </p>
+<p>I’ll add a couple of functions to the service, just to test that it actually works as expected.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> on(channel: <span class="built_in">string</span>, listener: <span class="built_in">Function</span>): <span class="built_in">void</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="keyword">this</span>._ipc) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>._ipc.on(channel, listener);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> send(channel: <span class="built_in">string</span>, ...args): <span class="built_in">void</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="keyword">this</span>._ipc) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>._ipc.send(channel, ...args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>As you can see, in both we check for the <code>_ipc</code> property to be assigned, and then we call the functions that we want to call. We expose the same function interface of the functions we want to call, so it will be very intuitive to call them from our application. </p>
+<p>The final service should look like:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; IpcRenderer &#125; <span class="keyword">from</span> <span class="string">'electron'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> IpcService &#123;</span><br><span class="line">  <span class="keyword">private</span> _ipc: IpcRenderer | <span class="literal">undefined</span> = <span class="built_in">void</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.require) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>._ipc = <span class="built_in">window</span>.require(<span class="string">'electron'</span>).ipcRenderer;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> e;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.warn(<span class="string">'Electron\'s IPC was not loaded'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> on(channel: <span class="built_in">string</span>, listener: IpcCallback): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>._ipc) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>._ipc.on(channel, listener);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> send(channel: <span class="built_in">string</span>, ...args): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>._ipc) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>._ipc.send(channel, ...args);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Testing-it"><a href="#Testing-it" class="headerlink" title="Testing it"></a>Testing it</h2><p>For testing we will call an ipc channel, and make Electron to response us back, and listen that response. </p>
+<p>First, we will update our <code>app.component</code> with the following constructor function:<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> readonly _ipc: IpcService</span>) &#123;</span><br><span class="line">  <span class="keyword">this</span>._ipc.on(<span class="string">'pong'</span>, <span class="function">(<span class="params">event: Electron.IpcMessageEvent</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'pong'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>._ipc.send(<span class="string">'ping'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>And then we will update Electron’s <code>index.ts</code> file, importing the <code>ipcMain</code> module and setting a listener for the <code>ping</code> event, that response <code>pong</code>.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// First we update the import line</span></span><br><span class="line"><span class="keyword">import</span> &#123; app, BrowserWindow, ipcMain, IpcMessageEvent &#125; <span class="keyword">from</span> <span class="string">'electron'</span>;</span><br><span class="line">...</span><br><span class="line">ipcMain.on(<span class="string">'ping'</span>, <span class="function">(<span class="params">event: IpcMessageEvent</span>) =&gt;</span> &#123;</span><br><span class="line">  event.sender.send(<span class="string">'pong'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Run the angular app with <code>npm run electron:start</code> and in the electron application run <code>npm start</code>. You should see a pong getting logged.</p>
+<p><img src="https://thepracticaldev.s3.amazonaws.com/i/xfyeh5gf2dvz66o54qdk.png" alt="pong"></p>
+<h1 id="Moving-forward"><a href="#Moving-forward" class="headerlink" title="Moving forward"></a>Moving forward</h1><p>There are still somethings that can be improve in the current workflow, and some of you are having troubles with native modules. But, so far we have pass for a simple Angular app, to a complete Angular/Electron integration. I’ll soon uploading all this to Github, to stay tune there as well. </p>
+<h1 id="That’s-all-folks"><a href="#That’s-all-folks" class="headerlink" title="That’s all folks"></a>That’s all folks</h1><p>As usual, thanks you for reading this, check out my others posts. Give the post love, and share it with your friends. See you next time.</p>
+<h1 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h1><ul>
+<li><a href="/integrating-an-angular-cli-application-with-electron-the-seed">The seed</a></li>
+<li><a href="/electron-with-typescript-using-ts-node">Electron with Typescript</a></li>
+<li><a href="/integrating-an-angular-cli-application-with-electron-the-ipc">The IPC</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://michaeljota.github.com/integration-an-angular-cli-application-with-electron-the-ipc/" data-id="cjd5v7waa0000cctzvcgocv7f" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/electron/">electron</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/electron-with-typescript-using-ts-node/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Electron With Typescript Using Ts-Node</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/angular/">angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/components/">components</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/electron/">electron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es2018/">es2018</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webcomponents/">webcomponents</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/widgets/">widgets</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/angular/" style="font-size: 20px;">angular</a> <a href="/tags/components/" style="font-size: 17.5px;">components</a> <a href="/tags/electron/" style="font-size: 15px;">electron</a> <a href="/tags/es2018/" style="font-size: 10px;">es2018</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/typescript/" style="font-size: 12.5px;">typescript</a> <a href="/tags/webcomponents/" style="font-size: 10px;">webcomponents</a> <a href="/tags/widgets/" style="font-size: 15px;">widgets</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/integration-an-angular-cli-application-with-electron-the-ipc/">Integration an Angular-CLI Application With Electron - the IPC</a>
+          </li>
+        
+          <li>
+            <a href="/electron-with-typescript-using-ts-node/">Electron With Typescript Using Ts-Node</a>
+          </li>
+        
+          <li>
+            <a href="/integration-an-angular-cli-application-with-electron-the-seed/">Integration an Angular-CLI Application With Electron - the Seed</a>
+          </li>
+        
+          <li>
+            <a href="/finally-we-have-a-finally-but-we-already-had-one/">Finally! We Have a Finally (But We Already Had One)</a>
+          </li>
+        
+          <li>
+            <a href="/pages-a-component-convention-for-angular-s-pages/">Pages: A Component Convention for Angular&#39;s Pages</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Michael De Abreu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
