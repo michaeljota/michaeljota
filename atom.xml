@@ -32,11 +32,11 @@
     </summary>
     
     
-      <category term="javascript" scheme="http://michaeljota.github.com/tags/javascript/"/>
-    
       <category term="development" scheme="http://michaeljota.github.com/tags/development/"/>
     
       <category term="webcomponents" scheme="http://michaeljota.github.com/tags/webcomponents/"/>
+    
+      <category term="javascript" scheme="http://michaeljota.github.com/tags/javascript/"/>
     
   </entry>
   
@@ -56,9 +56,9 @@
     </summary>
     
     
-      <category term="electron" scheme="http://michaeljota.github.com/tags/electron/"/>
-    
       <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
+    
+      <category term="electron" scheme="http://michaeljota.github.com/tags/electron/"/>
     
       <category term="node" scheme="http://michaeljota.github.com/tags/node/"/>
     
@@ -80,11 +80,11 @@
     </summary>
     
     
-      <category term="typescript" scheme="http://michaeljota.github.com/tags/typescript/"/>
+      <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
     
       <category term="electron" scheme="http://michaeljota.github.com/tags/electron/"/>
     
-      <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
+      <category term="typescript" scheme="http://michaeljota.github.com/tags/typescript/"/>
     
   </entry>
   
@@ -106,9 +106,9 @@
     
       <category term="javascript" scheme="http://michaeljota.github.com/tags/javascript/"/>
     
-      <category term="electron" scheme="http://michaeljota.github.com/tags/electron/"/>
-    
       <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
+    
+      <category term="electron" scheme="http://michaeljota.github.com/tags/electron/"/>
     
   </entry>
   
@@ -150,11 +150,11 @@
     </summary>
     
     
-      <category term="typescript" scheme="http://michaeljota.github.com/tags/typescript/"/>
-    
       <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
     
       <category term="components" scheme="http://michaeljota.github.com/tags/components/"/>
+    
+      <category term="typescript" scheme="http://michaeljota.github.com/tags/typescript/"/>
     
   </entry>
   
