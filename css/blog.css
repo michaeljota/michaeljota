@@ -1,0 +1,190 @@
+pre, code {
+  font-family: "Roboto Mono", "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace; }
+
+code {
+  background: #eee;
+  text-shadow: 0 1px #fff;
+  padding: 0 0.3em; }
+
+pre {
+  background: #2d2d2d;
+  margin: 0;
+  padding: 1em;
+  border-style: solid;
+  border-color: color-border;
+  border-width: 1px 0;
+  overflow: auto;
+  color: #cccccc;
+  line-height: 1.6em; }
+  pre code {
+    background: none;
+    text-shadow: none;
+    padding: 0; }
+
+.highlight {
+  background: #2d2d2d;
+  margin: 0;
+  padding: 1em;
+  border-style: solid;
+  border-color: color-border;
+  border-width: 1px 0;
+  overflow: auto;
+  color: #cccccc;
+  line-height: 1.6em; }
+  .highlight pre {
+    border: none;
+    margin: 0;
+    padding: 0; }
+  .highlight table {
+    margin: 0;
+    width: auto; }
+  .highlight td {
+    border: none;
+    padding: 0; }
+  .highlight figcaption {
+    font-size: 0.85em;
+    color: #999999;
+    line-height: 1em;
+    margin-bottom: 1em; }
+    .highlight figcaption a {
+      float: right; }
+  .highlight .gutter pre {
+    color: #666;
+    text-align: right;
+    padding-right: 20px; }
+  .highlight .line {
+    height: 1.6em; }
+  .highlight .line.marked {
+    background: #515151; }
+
+pre .doctag,
+pre .comment,
+pre .title {
+  color: #999999; }
+
+pre .variable,
+pre .attribute,
+pre .tag,
+pre .ruby .constant,
+pre .xml .tag .title,
+pre .xml .pi,
+pre .xml .doctype,
+pre .html .doctype,
+pre .css .id,
+pre .css .class,
+pre .css .pseudo {
+  color: #ec2864; }
+
+pre .number,
+pre .preprocessor,
+pre .built_in,
+pre .literal,
+pre .constant {
+  color: #ffb86c; }
+
+pre .string,
+pre .value,
+pre .inheritance,
+pre .header,
+pre .ruby .symbol,
+pre .xml .cdata,
+pre .class,
+pre .ruby .class .title,
+pre .css .rules .attribute {
+  color: #35ffdc; }
+
+pre .regexp,
+pre .css .hexcolor {
+  color: #addbdb; }
+
+pre .function,
+pre .python .decorator,
+pre .python .title,
+pre .ruby .function .title,
+pre .ruby .title .keyword,
+pre .perl .sub,
+pre .javascript .title,
+pre .coffeescript .title {
+  color: #7dc1ff; }
+
+pre .keyword,
+pre .javascript .function {
+  color: #ff75b5; }
+
+html {
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; }
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column; }
+
+main {
+  flex: 1 0 auto; }
+
+pre {
+  font-family: "Roboto Mono", "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace; }
+
+h1 {
+  font-size: 2em; }
+
+h2 {
+  font-size: 1.8em; }
+
+h3 {
+  font-size: 1.6em; }
+
+h4 {
+  font-size: 1.4em; }
+
+h5 {
+  font-size: 1.25em; }
+
+h6 {
+  font-size: 1.15em; }
+
+img {
+  width: 100%;
+  height: auto; }
+
+.mat-hexo.brand-logo {
+  padding: 0 1em; }
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  padding: 2em 0; }
+
+.card-subtitle {
+  font-size: 0.85em;
+  color: #999999; }
+
+.article.chip {
+  background-color: #ffab91;
+  color: white; }
+
+.navigation a {
+  color: white; }
+
+a {
+  color: #536dfe; }
+
+figure.highlight {
+  overflow: auto; }
+
+.card .card-content p {
+  padding: 1em 0; }
+
+.card .card-content .card-title {
+  font-size: 30px; }
+
+@media only screen and (max-width: 400px) {
+  .container {
+    width: 100%; }
+  figure.highlight {
+    margin: 0; } }
+
+@media only screen and (min-width: 600px) {
+  .mat-hexo.brand-logo {
+    left: 0;
+    transform: unset; } }

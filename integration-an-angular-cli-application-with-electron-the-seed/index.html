@@ -1,97 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<!-- Head tag -->
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   
-
-  
-  <title>Integration an Angular-CLI Application With Electron - the Seed | michaeljota</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="A step by step guide to integrate an Angular-CLI generated application with Electron framework.">
-<meta name="keywords" content="angular,electron,javascript">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Integration an Angular-CLI Application With Electron - the Seed">
-<meta property="og:url" content="http://michaeljota.github.com/integration-an-angular-cli-application-with-electron-the-seed/index.html">
-<meta property="og:site_name" content="michaeljota">
-<meta property="og:description" content="A step by step guide to integrate an Angular-CLI generated application with Electron framework.">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-02-01T23:39:07.417Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Integration an Angular-CLI Application With Electron - the Seed">
-<meta name="twitter:description" content="A step by step guide to integrate an Angular-CLI generated application with Electron framework.">
-  
-    <link rel="alternate" href="/atom.xml" title="michaeljota" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/favicon/favicon.ico">
+  <title>michaeljota</title>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/materialize/sass/materialize.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link rel="stylesheet" href="/css/ie10-viewport-bug-workaround.css">
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="/css/blog.css">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
 </head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">michaeljota</a>
-      </h1>
+  <body>
+    <!-- Menu -->
+    <nav>
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo mat-hexo">michaeljota</a>
+    <ul id="nav-mobile" class="right hide-on-small-only">
       
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">A world about my thoughs</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://michaeljota.github.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-integration-an-angular-cli-application-with-electron-the-seed" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/integration-an-angular-cli-application-with-electron-the-seed/" class="article-date">
-  <time datetime="2018-01-08T16:00:00.000Z" itemprop="datePublished">2018-01-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Integration an Angular-CLI Application With Electron - the Seed
-    </h1>
-  
+  <li>
+    <a href="/">
+      Home
+    </a>
+  </li>
 
-      </header>
+  <li>
+    <a href="/archives">
+      Archive
+    </a>
+  </li>
+
+    </ul>
+  </div>
+</nav>
+    <main class="container">
+      <div class="row">
+        <!-- Main Content -->
+        <div class="col s12">
+          <div class="row">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="/integration-an-angular-cli-application-with-electron-the-seed/">
+              Integration an Angular-CLI Application With Electron - the Seed
+            </a>
+          </span>
+          <div class"row">
+            
+
+  
+      <a href="/tags/javascript/">
+        <div class="chip article">#javascript</div>
+      </a>
+     
+      <a href="/tags/electron/">
+        <div class="chip article">#electron</div>
+      </a>
+     
+      <a href="/tags/angular/">
+        <div class="chip article">#angular</div>
+      </a>
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Integrate-your-project-with-Electron"><a href="#Integrate-your-project-with-Electron" class="headerlink" title="Integrate your project with Electron"></a>Integrate your project with Electron</h1><p>Electron is a platform to develop desktop applications using web technologies like HTML, CSS and JS. Integrate a ng-cli application with Electron is more straightforward that it may seems.</p>
+
+
+          </div>
+          <span class="card-subtitle right-align">
+            2018-01-08
+            
+          </span>
+        </div>
+      <h1 id="Integrate-your-project-with-Electron"><a href="#Integrate-your-project-with-Electron" class="headerlink" title="Integrate your project with Electron"></a>Integrate your project with Electron</h1><p>Electron is a platform to develop desktop applications using web technologies like HTML, CSS and JS. Integrate a ng-cli application with Electron is more straightforward that it may seems.</p>
 <h2 id="Electron’s-two-package-structure"><a href="#Electron’s-two-package-structure" class="headerlink" title="Electron’s two package structure"></a>Electron’s two package structure</h2><p>If you are familiarized with Electron you may remember the two package structure. We will use a similar structure, but with a key difference: In a regular two package structure, the <code>/app/</code> folder will contains the Electron app. We will name this folder <code>/electron/</code> and another <code>/app/</code> folder inside will contains our compiled Angular application.</p>
 <p>It may seem like we are using the two package structure, but we are just separating the Electron part from the rest of the application. </p>
 <h2 id="Changes-in-the-app-configuration"><a href="#Changes-in-the-app-configuration" class="headerlink" title="Changes in the app configuration"></a>Changes in the app configuration</h2><ul>
@@ -131,140 +126,118 @@
 <li><a href="/integrating-an-angular-cli-application-with-electron---the-ipc-4m18">The IPC</a></li>
 </ul>
 
-      
+      </div>
     </div>
-    <footer class="article-footer">
-      <a data-url="http://michaeljota.github.com/integration-an-angular-cli-application-with-electron-the-seed/" data-id="cjd5v7wbk0004cctzlfwcbfy4" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/electron/">electron</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
-
-    </footer>
   </div>
+</div>
+<div class="post-entry">
+  <!-- Title -->
+  <!-- Date and Author -->
+  <!-- Content -->
+  <!-- Tags and Categories links -->
   
-    
-<nav id="article-nav">
-  
-    <a href="/electron-with-typescript-using-ts-node/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
+
+
+</div>
+        </div>
+        <!-- Sidebar -->
+        <!-- <div class="col l3 offset-l1">
+          <div class="sidebar-module sidebar-module-inset">
+    <h4>About</h4>
+    <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+</div>
+<div class="sidebar-module">
+    <h4>Archives</h4>
+    <ol class="list-unstyled">
+        <li><a href="#">March 2014</a></li>
+        <li><a href="#">February 2014</a></li>
+        <li><a href="#">January 2014</a></li>
+        <li><a href="#">December 2013</a></li>
+        <li><a href="#">November 2013</a></li>
+    </ol>
+</div>
+<div class="sidebar-module">
+    <h4>Elsewhere</h4>
+    <ol class="list-unstyled">
+        <li><a href="#">GitHub</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Facebook</a></li>
+    </ol>
+</div>
+        </div> -->
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col m6 s12">
+        <h5 class="white-text">About me</h5>
         
-          Electron With Typescript Using Ts-Node
+        <p class="grey-text text-lighten-4">
+          I'm a venezuelan guy, living in the wild. I have a passion about new technologies and web standards. These are my ideas, although not everyone of them are good, they are mine. I'm always looking to improve the performance and styling of my coding.
+
+        </p>
         
       </div>
+      <div class="col s12 hide-on-med-and-up navigation">
+        <h5 class="white-text">Navigation</h5>
+        <ul class="grey-text text-lighten-4">
+          
+  <li>
+    <a href="/">
+      Home
     </a>
-  
-  
-    <a href="/finally-we-have-a-finally-but-we-already-had-one/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Finally! We Have a Finally (But We Already Had One)</div>
+  </li>
+
+  <li>
+    <a href="/archives">
+      Archive
     </a>
-  
-</nav>
+  </li>
 
-  
-</article>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/angular/">angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/components/">components</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/electron/">electron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es2018/">es2018</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typescript/">typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webcomponents/">webcomponents</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/widgets/">widgets</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/angular/" style="font-size: 20px;">angular</a> <a href="/tags/components/" style="font-size: 17.5px;">components</a> <a href="/tags/electron/" style="font-size: 15px;">electron</a> <a href="/tags/es2018/" style="font-size: 10px;">es2018</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/typescript/" style="font-size: 12.5px;">typescript</a> <a href="/tags/webcomponents/" style="font-size: 10px;">webcomponents</a> <a href="/tags/widgets/" style="font-size: 15px;">widgets</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/integration-an-angular-cli-application-with-electron-the-ipc/">Integration an Angular-CLI Application With Electron - the IPC</a>
-          </li>
-        
-          <li>
-            <a href="/electron-with-typescript-using-ts-node/">Electron With Typescript Using Ts-Node</a>
-          </li>
-        
-          <li>
-            <a href="/integration-an-angular-cli-application-with-electron-the-seed/">Integration an Angular-CLI Application With Electron - the Seed</a>
-          </li>
-        
-          <li>
-            <a href="/finally-we-have-a-finally-but-we-already-had-one/">Finally! We Have a Finally (But We Already Had One)</a>
-          </li>
-        
-          <li>
-            <a href="/pages-a-component-convention-for-angular-s-pages/">Pages: A Component Convention for Angular&#39;s Pages</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
+        </ul>
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2018 Michael De Abreu<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <div class="col m4 offset-m2 s12">
+        <h5 class="white-text">Social</h5>
+        <ul class"social">
+          
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="https://www.github.com/michaeljota">
+              <i class="fab fa-github"></i> Github
+            </a>
+          </li>
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="https://www.linkedin.com/in/michael-de-abreu-178a41120">
+              <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+          
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="/atom.xml">
+              <i class="fas fa-rss"></i> RSS
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+      © 2018 Michael De Abreu
     </div>
   </div>
 </footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
+    <!-- Scripts -->
+    <script src="/materialize/js/materialize.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-
-
-  </div>
-</body>
 </html>
