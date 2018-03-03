@@ -56,9 +56,9 @@
     </summary>
     
     
-      <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
-    
       <category term="electron" scheme="http://michaeljota.github.com/tags/electron/"/>
+    
+      <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
     
       <category term="node" scheme="http://michaeljota.github.com/tags/node/"/>
     
@@ -80,11 +80,11 @@
     </summary>
     
     
-      <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
+      <category term="typescript" scheme="http://michaeljota.github.com/tags/typescript/"/>
     
       <category term="electron" scheme="http://michaeljota.github.com/tags/electron/"/>
     
-      <category term="typescript" scheme="http://michaeljota.github.com/tags/typescript/"/>
+      <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
     
   </entry>
   
@@ -106,9 +106,9 @@
     
       <category term="javascript" scheme="http://michaeljota.github.com/tags/javascript/"/>
     
-      <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
-    
       <category term="electron" scheme="http://michaeljota.github.com/tags/electron/"/>
+    
+      <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
     
   </entry>
   
@@ -150,11 +150,11 @@
     </summary>
     
     
+      <category term="typescript" scheme="http://michaeljota.github.com/tags/typescript/"/>
+    
       <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
     
       <category term="components" scheme="http://michaeljota.github.com/tags/components/"/>
-    
-      <category term="typescript" scheme="http://michaeljota.github.com/tags/typescript/"/>
     
   </entry>
   
