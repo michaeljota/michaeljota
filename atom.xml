@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://michaeljota.github.com/"/>
-  <updated>2018-02-17T21:00:49.430Z</updated>
+  <updated>2018-03-03T15:44:43.563Z</updated>
   <id>http://michaeljota.github.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Why You Should Consider Using Classes to Declare the State of @Ngrx/store</title>
+    <link href="http://michaeljota.github.com/why-you-should-consider-use-classes-to-declarate-the-state-of-the-store/"/>
+    <id>http://michaeljota.github.com/why-you-should-consider-use-classes-to-declarate-the-state-of-the-store/</id>
+    <published>2018-03-03T15:36:53.000Z</published>
+    <updated>2018-03-03T15:44:43.563Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This week I’ve been playing around (again) with <code>@ngrx</code>, its store, effects, and go on, trying to integrating to a version of Tour of Heroes. It’s been more than a year since the last time I play with it, and I have to say, I’m becoming a more productive developer, and this has also evolve to become a better platform. The fact that observables now use piped operators, makes everything easier to understand.</p><p>I been watching some tutorials, and been reading a lot about the changes introduced with recent versions of the store, and I don’t know. I change the application state in two days. You may think that is a lot of time, but I didn’t know how to use effects, and also I wanted to follow the Angular Style Guide on this one, and the example app of <code>@ngrx</code> does not follow it, and most of the redux examples are made, well, for a React project.</p><p>I had my thoughts about the structure of an Angular application, but they were heavily influenced by the structure of React applications. The current Angular Code Style have change my mind about, but this is for another post.</p><h2 id="The-recommended-way"><a href="#The-recommended-way" class="headerlink" title="The recommended way"></a>The recommended way</h2><p>What I want to talk in this post, is about the recommended way to declare a state.</p><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> AppState &#123;</span><br><span class="line">    counter: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> initialAppState: AppState &#123;</span><br><span class="line">    counter: <span class="number">3</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>Why? Ok, here is why. It IS recommended that you use a POJO for declaring the state, and the actions. But, does it really hurt to declare an immutable Typescript class to declare the State?</p><h2 id="Classy"><a href="#Classy" class="headerlink" title="Classy"></a>Classy</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppState &#123;</span><br><span class="line">    <span class="keyword">public</span> readonly counter: <span class="built_in">number</span> = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>When this is set in the store configuration, the state initializes as a POJO as well, so there is no side effects going around here.</p><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; StoreModule &#125; <span class="keyword">from</span> <span class="string">'@ngrx/store'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppState &#123;</span><br><span class="line">    <span class="keyword">public</span> readonly counter: <span class="built_in">number</span> = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> reducers = <span class="function">(<span class="params">state = <span class="keyword">new</span> AppState(<span class="params"></span>), action</span>) =&gt;</span> state; <span class="comment">// Best reducer ever!</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [</span><br><span class="line">    StoreModule.forRoot(reducers, &#123;</span><br><span class="line">      initialState: <span class="keyword">new</span> AppState(),</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppStoreModule &#123;&#125;</span><br></pre></td></tr></table></figure><p>I think this is clearer. You make sure that you set all the required properties, and only need to call the constructor when ever you need. And, you can use the AppState as a interface, wherever you want. </p><p>Do you think this is a good thing o a bad thing? Why? I would like to read your comments. </p>]]></content>
+    
+    <summary type="html">
+    
+      A opinion post about the use of classes in @ngrx/store
+    
+    </summary>
+    
+    
+      <category term="typescript" scheme="http://michaeljota.github.com/tags/typescript/"/>
+    
+      <category term="angular" scheme="http://michaeljota.github.com/tags/angular/"/>
+    
+  </entry>
   
   <entry>
     <title>A Thought About the Future of Web Application Development</title>

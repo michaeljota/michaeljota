@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/favicon/favicon.ico">
+  <title>michaeljota</title>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/materialize/sass/materialize.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link rel="stylesheet" href="/css/ie10-viewport-bug-workaround.css">
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="/css/blog.css">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body>
+    <!-- Menu -->
+    <nav>
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo mat-hexo">michaeljota</a>
+    <ul id="nav-mobile" class="right hide-on-small-only">
+      
+  <li>
+    <a href="/">
+      Home
+    </a>
+  </li>
+
+  <li>
+    <a href="/archives">
+      Archive
+    </a>
+  </li>
+
+    </ul>
+  </div>
+</nav>
+    <main class="container">
+      <div class="row">
+        <!-- Main Content -->
+        <div class="col s12">
+          <div class="row">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="/why-you-should-consider-use-classes-to-declarate-the-state-of-the-store/">
+              Why You Should Consider Using Classes to Declare the State of @Ngrx/store
+            </a>
+          </span>
+          <div class"row">
+            
+
+  
+      <a href="/tags/typescript/">
+        <div class="chip article">#typescript</div>
+      </a>
+     
+      <a href="/tags/angular/">
+        <div class="chip article">#angular</div>
+      </a>
+    
+
+
+          </div>
+          <span class="card-subtitle right-align">
+            2018-03-03
+            
+          </span>
+        </div>
+      <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This week I’ve been playing around (again) with <code>@ngrx</code>, its store, effects, and go on, trying to integrating to a version of Tour of Heroes. It’s been more than a year since the last time I play with it, and I have to say, I’m becoming a more productive developer, and this has also evolve to become a better platform. The fact that observables now use piped operators, makes everything easier to understand.</p>
+<p>I been watching some tutorials, and been reading a lot about the changes introduced with recent versions of the store, and I don’t know. I change the application state in two days. You may think that is a lot of time, but I didn’t know how to use effects, and also I wanted to follow the Angular Style Guide on this one, and the example app of <code>@ngrx</code> does not follow it, and most of the redux examples are made, well, for a React project.</p>
+<p>I had my thoughts about the structure of an Angular application, but they were heavily influenced by the structure of React applications. The current Angular Code Style have change my mind about, but this is for another post.</p>
+<h2 id="The-recommended-way"><a href="#The-recommended-way" class="headerlink" title="The recommended way"></a>The recommended way</h2><p>What I want to talk in this post, is about the recommended way to declare a state.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> AppState &#123;</span><br><span class="line">    counter: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> initialAppState: AppState &#123;</span><br><span class="line">    counter: <span class="number">3</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Why? Ok, here is why. It IS recommended that you use a POJO for declaring the state, and the actions. But, does it really hurt to declare an immutable Typescript class to declare the State?</p>
+<h2 id="Classy"><a href="#Classy" class="headerlink" title="Classy"></a>Classy</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppState &#123;</span><br><span class="line">    <span class="keyword">public</span> readonly counter: <span class="built_in">number</span> = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>When this is set in the store configuration, the state initializes as a POJO as well, so there is no side effects going around here.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; StoreModule &#125; <span class="keyword">from</span> <span class="string">'@ngrx/store'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppState &#123;</span><br><span class="line">    <span class="keyword">public</span> readonly counter: <span class="built_in">number</span> = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> reducers = <span class="function">(<span class="params">state = <span class="keyword">new</span> AppState(<span class="params"></span>), action</span>) =&gt;</span> state; <span class="comment">// Best reducer ever!</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [</span><br><span class="line">    StoreModule.forRoot(reducers, &#123;</span><br><span class="line">      initialState: <span class="keyword">new</span> AppState(),</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppStoreModule &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>I think this is clearer. You make sure that you set all the required properties, and only need to call the constructor when ever you need. And, you can use the AppState as a interface, wherever you want. </p>
+<p>Do you think this is a good thing o a bad thing? Why? I would like to read your comments. </p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="post-entry">
+  
+
+
+</div>
+        </div>
+        <!-- Sidebar -->
+        <!-- <div class="col l3 offset-l1">
+          <div class="sidebar-module sidebar-module-inset">
+    <h4>About</h4>
+    <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+</div>
+<div class="sidebar-module">
+    <h4>Archives</h4>
+    <ol class="list-unstyled">
+        <li><a href="#">March 2014</a></li>
+        <li><a href="#">February 2014</a></li>
+        <li><a href="#">January 2014</a></li>
+        <li><a href="#">December 2013</a></li>
+        <li><a href="#">November 2013</a></li>
+    </ol>
+</div>
+<div class="sidebar-module">
+    <h4>Elsewhere</h4>
+    <ol class="list-unstyled">
+        <li><a href="#">GitHub</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Facebook</a></li>
+    </ol>
+</div>
+        </div> -->
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col m6 s12">
+        <h5 class="white-text">About me</h5>
+        
+        <p class="grey-text text-lighten-4">
+          I'm a venezuelan guy, living in the wild. I have a passion about new technologies and web standards. These are my ideas, although not everyone of them are good, they are mine. I'm always looking to improve the performance and styling of my coding.
+
+        </p>
+        
+      </div>
+      <div class="col s12 hide-on-med-and-up navigation">
+        <h5 class="white-text">Navigation</h5>
+        <ul class="grey-text text-lighten-4">
+          
+  <li>
+    <a href="/">
+      Home
+    </a>
+  </li>
+
+  <li>
+    <a href="/archives">
+      Archive
+    </a>
+  </li>
+
+        </ul>
+      </div>
+      <div class="col m4 offset-m2 s12">
+        <h5 class="white-text">Social</h5>
+        <ul class"social">
+          
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="https://www.github.com/michaeljota">
+              <i class="fab fa-github"></i> Github
+            </a>
+          </li>
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="https://www.linkedin.com/in/michael-de-abreu-178a41120">
+              <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+          
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="/atom.xml">
+              <i class="fas fa-rss"></i> RSS
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+      © 2018 Michael De Abreu
+      <span class="grey-text text-lighten-4 right">
+        Theme made with ❤️ for
+        <a href="https://hexo.io">Hexo</a>
+        using 
+        <a href="http://next.materializecss.com">Materialize</a>
+      </span>
+    </div>
+  </div>
+</footer>
+    <!-- Scripts -->
+    <script src="/materialize/js/materialize.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+
+</html>
