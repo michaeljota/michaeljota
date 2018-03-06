@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/favicon/favicon.ico">
+  <title>michaeljota</title>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/materialize/sass/materialize.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link rel="stylesheet" href="/css/ie10-viewport-bug-workaround.css">
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="/css/blog.css">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body>
+    <!-- Menu -->
+    <nav>
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo mat-hexo">michaeljota</a>
+    <ul id="nav-mobile" class="right hide-on-small-only">
+      
+  <li>
+    <a href="/">
+      Home
+    </a>
+  </li>
+
+  <li>
+    <a href="/archives">
+      Archive
+    </a>
+  </li>
+
+    </ul>
+  </div>
+</nav>
+    <main class="container">
+      <div class="row">
+        <!-- Main Content -->
+        <div class="col s12">
+          <div class="row">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="/ngrx-ducks-a-proposal-for-the-ducks-bundles-in-angular/">
+              Ngrx-Ducks: A Proposal for the Ducks Bundles in Angular
+            </a>
+          </span>
+          <div class"row">
+            
+
+
+          </div>
+          <span class="card-subtitle right-align">
+            2018-03-05
+            
+          </span>
+        </div>
+      <h1 id="ngrx-ducks-A-proposal-for-managing-ducks-in-Angular"><a href="#ngrx-ducks-A-proposal-for-managing-ducks-in-Angular" class="headerlink" title="ngrx-ducks: A proposal for managing ducks in Angular"></a>ngrx-ducks: A proposal for managing ducks in Angular</h1><p>This document is based on the original <a href="https://github.com/erikras/ducks-modular-redux" target="_blank" rel="noopener">ducks</a> proposal, and the <a href="https://github.com/alexnm/re-ducks" target="_blank" rel="noopener">re-ducks</a> extension, and was made thinking first about Angular, and the current Angular Style Guide, as such I will try to use the same vocabulary with the same meaning.</p>
+<hr>
+<h2 id="What-is-a-duck"><a href="#What-is-a-duck" class="headerlink" title="What is a duck?"></a>What is a duck?</h2><p>A duck is a module proposal to bundle redux related code, reducer, actions, and actions types. The original proposal follow this simple rules:</p>
+<ul>
+<li>MUST export default a function called reducer().</li>
+<li>MUST export its action creators as functions.</li>
+<li>MUST have action types in the form. <code>npm-module-or-app/reducer/ACTION_TYPE</code></li>
+<li>MAY export its action types as <code>UPPER_SNAKE_CASE</code>, if an external reducer needs to listen for them, or if it is a published reusable library.</li>
+</ul>
+<p>However, some of these rules are not usable in Angular, and others can be improved to take full advantage of the Typescript and Angular.</p>
+<ul>
+<li><code>default</code> exports doesn’t work with AOT.</li>
+<li><code>function</code> creators does not allow to use Typescript type discrimination. You could create and return an interface to use this, but Angular Style Guide discourage the use of interfaces.</li>
+<li>Action Types can be expressed as Typescript strings <code>enums</code>.</li>
+<li><code>UPPER_SNAKE_CASE</code> is discourage by Angular Style Guide.</li>
+</ul>
+<hr>
+<h2 id="Style-Guide"><a href="#Style-Guide" class="headerlink" title="Style Guide"></a>Style Guide</h2><p>As I said, I will use Angular Style Guide as the main document. I will use additional vocabulary.</p>
+<ul>
+<li><em>Extension</em> Notes that extend the rule adapting it to use with <code>ngrx</code>.</li>
+</ul>
+<h2 id="Naming"><a href="#Naming" class="headerlink" title="Naming"></a>Naming</h2><h3 id="Separate-file-names-with-dots-and-dashes"><a href="#Separate-file-names-with-dots-and-dashes" class="headerlink" title="Separate file names with dots and dashes"></a>Separate file names with dots and dashes</h3><h5 id="Extension-Style-02-02"><a href="#Extension-Style-02-02" class="headerlink" title="Extension: Style 02-02"></a>Extension: <a href="https://angular.io/guide/styleguide#style-02-02" target="_blank" rel="noopener">Style 02-02</a></h5><p><em>Consider</em> use conventional type names for store related code, including <code>actions</code>, <code>effects</code>, <code>reducer</code>, <code>selectors</code> and <code>dispatcher</code>.</p>
+<p><em>Why?</em> Those type names represents a duck.</p>
+<h3 id="Service-names"><a href="#Service-names" class="headerlink" title="Service names"></a>Service names</h3><h5 id="Extension-Style-02-04"><a href="#Extension-Style-02-04" class="headerlink" title="Extension: Style 02-04"></a>Extension: <a href="https://angular.io/guide/styleguide#style-02-04" target="_blank" rel="noopener">Style 02-04</a></h5><p><em>Avoid</em> naming files for store related services with the <code>.service</code> suffix.</p>
+<p><em>Why?</em> Consistency with the duck naming, and the Style 02-02 [<em>extension</em>]</p>
+<h3 id="Angular-NgModule-names"><a href="#Angular-NgModule-names" class="headerlink" title="Angular NgModule names"></a>Angular <em>NgModule</em> names</h3><h5 id="Extension-Style-02-12"><a href="#Extension-Style-02-12" class="headerlink" title="Extension: Style 02-12"></a>Extension: <a href="https://angular.io/guide/styleguide#style-02-12" target="_blank" rel="noopener">Style 02-12</a></h5><p><em>Consider</em> use an Angular barrel module to setup the Store. </p>
+<p><em>Consider</em> setup and export the state from the module.</p>
+<p><em>Do</em> suffix the name a Store module with <code>StoreModule</code>.</p>
+<p><em>Do</em> end the file name of a Store module with <code>-store.module</code>. </p>
+<p><em>Why?</em> Barrel modules are a common practice in Angular, and a recommended way to keep your modules cleaner.</p>
+<h3 id="Interfaces"><a href="#Interfaces" class="headerlink" title="Interfaces"></a>Interfaces</h3><h5 id="Extension-Style-03-03"><a href="#Extension-Style-03-03" class="headerlink" title="Extension Style 03-03"></a>Extension <a href="https://angular.io/guide/styleguide#style-03-03" target="_blank" rel="noopener">Style 03-03</a></h5><p><em>Avoid</em> declaring the states of the store and reducers as an interface.</p>
+<p><em>Consider</em> declaring the state of the store and reducers as a class.</p>
+<p><em>Consider</em> using the class properties to initialize the states.</p>
+<p><em>Do</em> initialize the state creating a new instance of the class inside a new object using spread operator.</p>
+<p><em>Why?</em> Using spread operator ensures that you are initializing the state as a POJO.</p>
+<p><em>Why?</em> Angular Compiler needs to statically analyze the code.</p>
+<p><em>Why?</em> You make sure you initiate all the state properties.</p>
+<h3 id="Overall-structural-guidelines"><a href="#Overall-structural-guidelines" class="headerlink" title="Overall structural guidelines"></a>Overall structural guidelines</h3><h5 id="Extension-Style-04-06"><a href="#Extension-Style-04-06" class="headerlink" title="Extension Style 04-06"></a>Extension <a href="https://angular.io/guide/styleguide#style-04-06" target="_blank" rel="noopener">Style 04-06</a></h5><p><em>Consider</em> putting the duck files in the component folder.</p>
+<p><em>Why?</em> Duck files most of the times are used by a single component.</p>
+<h3 id="Feature-modules"><a href="#Feature-modules" class="headerlink" title="Feature modules"></a>Feature modules</h3><h5 id="Extension-Style-04-09"><a href="#Extension-Style-04-09" class="headerlink" title="Extension Style 04-09"></a>Extension <a href="https://angular.io/guide/styleguide#style-04-09" target="_blank" rel="noopener">Style 04-09</a></h5><p><em>Consider</em> creating a feature store module.</p>
+<h3 id="Shared-feature-module"><a href="#Shared-feature-module" class="headerlink" title="Shared feature module"></a>Shared feature module</h3><h5 id="Extension-Style-04-10"><a href="#Extension-Style-04-10" class="headerlink" title="Extension Style 04-10"></a>Extension <a href="https://angular.io/guide/styleguide#style-04-10" target="_blank" rel="noopener">Style 04-10</a></h5><p><em>Consider</em> putting the duck files you must use in the application wide here.</p>
+<p><em>Why?</em> Using shared modules to shared ducks makes sense.</p>
+<h3 id="Delegate-complex-component-logic-to-services"><a href="#Delegate-complex-component-logic-to-services" class="headerlink" title="Delegate complex component logic to services"></a>Delegate complex component logic to services</h3><h5 id="Extension-Style-05-15"><a href="#Extension-Style-05-15" class="headerlink" title="Extension Style 05-15"></a>Extension <a href="https://angular.io/guide/styleguide#style-05-15" target="_blank" rel="noopener">Style 05-15</a></h5><p><em>Consider</em> using store to manage the state of the component.</p>
+<p><em>Why?</em> Allows you to reduce the number of the dependencies.</p>
+<p><em>Why?</em> Components are easier to test, as the only show a given state.</p>
+<h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><p>Useful tips for Angular applications with <code>@ngrx</code> platform.</p>
+<h3 id="Actions-and-Actions-Types"><a href="#Actions-and-Actions-Types" class="headerlink" title="Actions and Actions Types"></a>Actions and Actions Types</h3><h5 id="Style-NGRX-01"><a href="#Style-NGRX-01" class="headerlink" title="Style NGRX-01"></a>Style NGRX-01</h5><p><em>Consider</em> creating all the actions as classes.</p>
+<p><em>Consider</em> using a type union of all actions classes.</p>
+<p><em>Consider</em> using strings enums to declaring the actions types.</p>
+<p><em>Consider</em> prefix the value of all enums keys with a unique name.</p>
+<p><em>Consider</em> making the unique name related to the component.</p>
+<p><em>Consider</em> exporting the actions, the type and the enum of the actions types from an action file.</p>
+<p><em>Consider</em> creating a dispatcher service to dispatch actions.</p>
+<p><em>Consider</em> use human readable names for the methods in the dispatcher.</p>
+<p><em>Consider</em> exporting the dispatcher service from a dispatcher file. </p>
+<p><em>Why?</em> Using classes for actions allow to take advantage of the discriminatory types of Typescript.</p>
+<p><em>Why?</em> A dispatcher </p>
+<h3 id="Effects"><a href="#Effects" class="headerlink" title="Effects"></a>Effects</h3><h5 id="Style-NGRX-02"><a href="#Style-NGRX-02" class="headerlink" title="Style NGRX-02"></a>Style NGRX-02</h5><p><em>Consider</em> using effects to integrate the results of all asynchronous operations with the state of the application.</p>
+<p><em>Avoid</em> importing directly the effects into the application.</p>
+<p><em>Why?</em> Using effects allows you practice the separation of concerns.</p>
+<p><em>Why?</em> Effects does not need to be imported into the application. Only the Effects Module configuration.</p>
+<h3 id="Reducers"><a href="#Reducers" class="headerlink" title="Reducers"></a>Reducers</h3><h5 id="Style-NGRX-03"><a href="#Style-NGRX-03" class="headerlink" title="Style NGRX-03"></a>Style NGRX-03</h5><p><em>Consider</em> placing a module reducer inside the store configuration.</p>
+<p><em>Consider</em> using a component reducer aside the component that will use it.</p>
+<p><em>Consider</em> declaring the initial state of the reducer as classes.</p>
+<p><em>Consider</em> Initialize the state of the module reducer with properties calling a new instance of the component reducer states.</p>
+<p><em>Why?</em> Module reducers should only import the components reducers and initialize them.</p>
+<p><em>Why?</em> Classes allows to initialize the state of the reducer in a cleaner way.</p>
+<h3 id="Selectors"><a href="#Selectors" class="headerlink" title="Selectors"></a>Selectors</h3><h5 id="Style-NGRX-04"><a href="#Style-NGRX-04" class="headerlink" title="Style NGRX-04"></a>Style NGRX-04</h5><p><em>Consider</em> exporting a feature selector in the store configuration.</p>
+<p><em>Consider</em> using selectors to take the property you need.</p>
+<p><em>Why?</em> Selectors are a type safe approach to return an observable property of the state.</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="post-entry">
+  
+
+
+</div>
+        </div>
+        <!-- Sidebar -->
+        <!-- <div class="col l3 offset-l1">
+          <div class="sidebar-module sidebar-module-inset">
+    <h4>About</h4>
+    <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+</div>
+<div class="sidebar-module">
+    <h4>Archives</h4>
+    <ol class="list-unstyled">
+        <li><a href="#">March 2014</a></li>
+        <li><a href="#">February 2014</a></li>
+        <li><a href="#">January 2014</a></li>
+        <li><a href="#">December 2013</a></li>
+        <li><a href="#">November 2013</a></li>
+    </ol>
+</div>
+<div class="sidebar-module">
+    <h4>Elsewhere</h4>
+    <ol class="list-unstyled">
+        <li><a href="#">GitHub</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Facebook</a></li>
+    </ol>
+</div>
+        </div> -->
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col m6 s12">
+        <h5 class="white-text">About me</h5>
+        
+        <p class="grey-text text-lighten-4">
+          I'm a venezuelan guy, living in the wild. I have a passion about new technologies and web standards. These are my ideas, although not everyone of them are good, they are mine. I'm always looking to improve the performance and styling of my coding.
+
+        </p>
+        
+      </div>
+      <div class="col s12 hide-on-med-and-up navigation">
+        <h5 class="white-text">Navigation</h5>
+        <ul class="grey-text text-lighten-4">
+          
+  <li>
+    <a href="/">
+      Home
+    </a>
+  </li>
+
+  <li>
+    <a href="/archives">
+      Archive
+    </a>
+  </li>
+
+        </ul>
+      </div>
+      <div class="col m4 offset-m2 s12">
+        <h5 class="white-text">Social</h5>
+        <ul class"social">
+          
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="https://www.github.com/michaeljota">
+              <i class="fab fa-github"></i> Github
+            </a>
+          </li>
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="https://www.linkedin.com/in/michael-de-abreu-178a41120">
+              <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+          
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="/atom.xml">
+              <i class="fas fa-rss"></i> RSS
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+      © 2018 Michael De Abreu
+      <span class="grey-text text-lighten-4 right">
+        Theme made with ❤️ for
+        <a href="https://hexo.io">Hexo</a>
+        using 
+        <a href="http://next.materializecss.com">Materialize</a>
+      </span>
+    </div>
+  </div>
+</footer>
+    <!-- Scripts -->
+    <script src="/materialize/js/materialize.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+
+</html>
