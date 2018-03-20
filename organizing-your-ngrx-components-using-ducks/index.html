@@ -53,190 +53,65 @@
         <!-- Main Content -->
         <div class="col s12">
           <div class="row">
-  
-    <div class="col s12 m6">
-  <div class="card">
-    <div class="card-content">
-      <div class="card-header">
-        <span class="card-title">
-          <a href="/readonly-input-for-primitive-properties-in-angular-s-widgets/">
-            Readonly Input for Primitive Properties in Angular's Widgets
-          </a>
-        </span>
-
-        <div class"row">
-          
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="/organizing-your-ngrx-components-using-ducks/">
+              Organizing Your Ngrx Components Using Ducks
+            </a>
+          </span>
+          <div class"row">
+            
 
   
-      <a href="/tags/javascript/">
-        <div class="chip article">#javascript</div>
+      <a href="/tags/typescript/">
+        <div class="chip article">#typescript</div>
       </a>
      
       <a href="/tags/angular/">
         <div class="chip article">#angular</div>
       </a>
      
-      <a href="/tags/components/">
-        <div class="chip article">#components</div>
+      <a href="/tags/ngrx/">
+        <div class="chip article">#ngrx</div>
       </a>
      
-      <a href="/tags/widgets/">
-        <div class="chip article">#widgets</div>
+      <a href="/tags/redux/">
+        <div class="chip article">#redux</div>
       </a>
     
 
 
+          </div>
+          <span class="card-subtitle right-align">
+            2018-03-07
+            
+          </span>
         </div>
-        <span class="card-subtitle right-align">
-          2017-08-27
-          
-        </span>
+      <h1 id="Organizing-your-ngrx-components-using-ducks"><a href="#Organizing-your-ngrx-components-using-ducks" class="headerlink" title="Organizing your ngrx components using ducks"></a>Organizing your ngrx components using ducks</h1><p>I started to use ngrx recently, again, but I couldn’t find a way to organize the code following the team recommendations. I noticed that most of the style guide was using a folder-by-type structure, popular amount React projects but discouraged by the Angular Style Guide, that strongly suggests the use of a folder-by-feature structure. They even divide the features of the application in core, shared, and other features, where most of the time, core module should be importing all the core components and services of the application and be loaded by the main module, shared module should use a barrel module for all the shared components and should be imported by the features modules, and they recommend to all others feature modules to be lazy loaded.</p>
+<p>The community seems to have a strong opinion of when to use each structure, but most of the time, folder-by-feature is recommended, because it allows to scale easier than folder-by-type.</p>
+<p>When I worked with Angular and ngrx, I used folder-by-type, and the projects I have worked with React, our team used folder-by-type, and we tried to implement the <a href="https://github.com/erikras/ducks-modular-redux" target="_blank" rel="noopener">ducks</a> proposal often. There is a extension of that proposal to be used in a folder-by-fracture structure, named <a href="https://github.com/alexnm/re-ducks" target="_blank" rel="noopener">re-ducks</a>. So, based off the re-ducks proposal, and using the Angular Style Guide, I develop a Tour of Hero app.</p>
+<p>I documented the result in <a href="github.com/michaeljota/ngrx-ducks">ngrx-ducks</a> repository, and I will try to explain it here.</p>
+<h3 id="Store"><a href="#Store" class="headerlink" title="Store"></a>Store</h3><p>In <code>@ngrx</code> the store have to be configured as a module, using a similar approach that Route Module have. So I took most of the recommendations about the routes in the ASG and applied to the Store in the project. </p>
+<h3 id="Ducks"><a href="#Ducks" class="headerlink" title="Ducks"></a>Ducks</h3><p>Reducers, Actions, Effects, and Selectors, are called ducks in the proposal with the same name. In that proposal, it assumes that you are using a folder-by-type structure, and suggest to use a ducks file exporting all your ducks. In the re-ducks proposal however, it assumes that you are using a folder-by-feature structure, and suggest to separate each part of the ducks in its own file, and reexport them in a index file, inside a ducks folder.</p>
+<p>In this proposal however, I assume that most of your reducers will be related with one component. Assuming that one reducer will handle the state of one component, allow you to put your ducks along with this.</p>
+<p>To assume this, I also assume that you are using a folder-by-feature structure, and your are declaring a module for every of your features. This module should have its own store, and should import the state of the reducers and initialize the state of that feature. Also, it should export a feature selector, to be used by the each of that feature components selectors.</p>
+<h1 id="A-word-about-this"><a href="#A-word-about-this" class="headerlink" title="A word about this"></a>A word about this</h1><p>Obviously, this is not an approach for everybody. If you fell like you can use the current style guide from <code>@ngrx</code>, that’s totally ok. I just need and alternative to use in larger projects. If you have a suggestion or anything, please, leave it in the comments, or better yet, open an issue in the repo.</p>
+<p>The complete proposal is quite large to be included here, but you can read it in <a href="github.com/michaeljota/ngrx-ducks">ngrx-ducks</a>. </p>
+<p>I know I did this thinking about me, but I really hope this can help someone else. </p>
+<p>Thanks you so much for reading this, and I will really appreciate your thoughts about this. I don’t fell like having so much experience in large projects, but I do fell like thinking in horizontal scaling is a good approach to do so.  </p>
+
       </div>
-      <p>
-        Another way to handle the inputs in a widget in a right way.
-      </p>
-    </div>
-    <div class="card-action">
-      <a href="/readonly-input-for-primitive-properties-in-angular-s-widgets/">
-        Read More
-      </a>
     </div>
   </div>
 </div>
-
-  
-    <div class="col s12 m6">
-  <div class="card">
-    <div class="card-content">
-      <div class="card-header">
-        <span class="card-title">
-          <a href="/input-set-pattern-for-angular-s-widgets/">
-            @Input-Set Pattern for Angular's Widgets
-          </a>
-        </span>
-
-        <div class"row">
-          
-
-  
-      <a href="/tags/angular/">
-        <div class="chip article">#angular</div>
-      </a>
-     
-      <a href="/tags/components/">
-        <div class="chip article">#components</div>
-      </a>
-     
-      <a href="/tags/widgets/">
-        <div class="chip article">#widgets</div>
-      </a>
-    
-
-
-        </div>
-        <span class="card-subtitle right-align">
-          2017-05-28
-          
-        </span>
-      </div>
-      <p>
-        Pattern proposal for data management in Angular's Widgets
-      </p>
-    </div>
-    <div class="card-action">
-      <a href="/input-set-pattern-for-angular-s-widgets/">
-        Read More
-      </a>
-    </div>
-  </div>
-</div>
-
-  
-    <div class="col s12 m6">
-  <div class="card">
-    <div class="card-content">
-      <div class="card-header">
-        <span class="card-title">
-          <a href="/widgets-and-components-for-angular/">
-            Widgets and Components for Angular 2 and Up
-          </a>
-        </span>
-
-        <div class"row">
-          
-
-  
-      <a href="/tags/webcomponents/">
-        <div class="chip article">#webcomponents</div>
-      </a>
-     
-      <a href="/tags/angular/">
-        <div class="chip article">#angular</div>
-      </a>
-     
-      <a href="/tags/components/">
-        <div class="chip article">#components</div>
-      </a>
-     
-      <a href="/tags/widgets/">
-        <div class="chip article">#widgets</div>
-      </a>
-    
-
-
-        </div>
-        <span class="card-subtitle right-align">
-          2017-03-10
-          
-        </span>
-      </div>
-      <p>
-        A review about React components and containers, but for Angular 2.
-      </p>
-    </div>
-    <div class="card-action">
-      <a href="/widgets-and-components-for-angular/">
-        Read More
-      </a>
-    </div>
-  </div>
-</div>
-
-  
-</div>
-<div class="row">
+<div class="post-entry">
   
 
-<div class="right-align">
-  <ul class="pagination">
-    <li class="waves-effect">
-      <a href="/" onclick="return true;">
-        <i class="material-icons">chevron_left</i>
-      </a>
-    </li>
-    
-    <li class="waves-effect false">
-      <a href="/">
-        1
-      </a>
-    </li>
-    
-    <li class="waves-effect active">
-      <a href="/page/2/">
-        2
-      </a>
-    </li>
-    
-    <li class="disabled">
-      <a href="/" onclick="return false;">
-        <i class="material-icons">chevron_right</i>
-      </a>
-    </li>
-  </ul>
-</div>
 
 </div>
-
         </div>
         <!-- Sidebar -->
         <!-- <div class="col l3 offset-l1">

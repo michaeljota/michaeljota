@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/favicon/favicon.ico">
+  <title>michaeljota</title>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/materialize/sass/materialize.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link rel="stylesheet" href="/css/ie10-viewport-bug-workaround.css">
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="/css/blog.css">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body>
+    <!-- Menu -->
+    <nav>
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo mat-hexo">michaeljota</a>
+    <ul id="nav-mobile" class="right hide-on-small-only">
+      
+  <li>
+    <a href="/">
+      Home
+    </a>
+  </li>
+
+  <li>
+    <a href="/archives">
+      Archive
+    </a>
+  </li>
+
+    </ul>
+  </div>
+</nav>
+    <main class="container">
+      <div class="row">
+        <!-- Main Content -->
+        <div class="col s12">
+          <div class="row">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="/typescript-vs-flow-getting-started/">
+              TypeScript vs Flow - Getting Started
+            </a>
+          </span>
+          <div class"row">
+            
+
+  
+      <a href="/tags/javascript/">
+        <div class="chip article">#javascript</div>
+      </a>
+     
+      <a href="/tags/typescript/">
+        <div class="chip article">#typescript</div>
+      </a>
+     
+      <a href="/tags/flow/">
+        <div class="chip article">#flow</div>
+      </a>
+    
+
+
+          </div>
+          <span class="card-subtitle right-align">
+            2018-03-19
+            
+          </span>
+        </div>
+      <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>I won’t hide the fact that I’m a fulltime Typescript developer, but I will try hard to give Flow a chance, because I really want a fair comparison between them. I know there has been several over the years, but this one, I’ll try to update it at least twice per year.</p>
+<p>I first met Typescript while working in my BD final project. Then, I have strong knowledge about Java and C#, but I didn’t quite knew Javascript, so Typescript was something that interested me instantly. Anyhow, back then, I think that precompilers and build tools was just too much for me, so I did not work with it until mid 2016, when Angular came out.</p>
+<p>And I met Flow last year, while I was working in a React project. We wanted to add static type check to the project, because it was getting big, and we weren’t scaling that well. I try both of them back then, but I really wanted to use Typescript, because it have all this new syntax, so I did not give much credit to Flow.</p>
+<p>I remember we, as team, chose Typescript, because its integration with several IDEs. I want to think things changed, and want to give Flow a chance, a real one this time.</p>
+<p>I try to use a scale from 1 to 10 to evaluate the two of them in several features. At the end, I will just sum all the individual scores. However, I don’t think the final score would be an indication of witch one is better <del>of curse it will, if not why I’m even giving scores?</del>.</p>
+<hr>
+<h2 id="What-are-they"><a href="#What-are-they" class="headerlink" title="What are they?"></a>What are they?</h2><p>Flow is a static type checker for JavaScript, and Typescript is a language that strictly super sets JavaScript with optional static typing. This is a subtle difference between them, and I hope you notice it as we get down the road.</p>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><h5 id="Flow"><a href="#Flow" class="headerlink" title="Flow"></a>Flow</h5><p>To start with Flow, we will need to install a compiler to remove the type annotations of the files. This will be either Babel, configured with Flow preset, or <code>flow-remove-types</code>. I will go with the first one, as I think most of the projects now days use Babel anyway.</p>
+<ol>
+<li>We initialize the project, and add Babel dev dependencies, and Flow preset.</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ~/flow<span class="comment"># npm init -y</span></span><br><span class="line">$ ~/flow<span class="comment"># npm i -D babel-cli babel-preset-env babel-preset-flow</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>Configure Babel and add a script in <code>package.json</code>.</li>
+</ol>
+<p><code>.babelrc</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"presets"</span>: [<span class="string">"env"</span>, <span class="string">"flow"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>package.json</code> (excerpt)</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"build"</span>: <span class="string">"babel src/ -d lib/"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Install and configure Flow</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ~/flow<span class="comment"># npm i -D flow-bin</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>If you have a recent version of <code>npm</code> (^5.3.0) you could use <code>npx</code>, as I will. If not, you should add Flow as a script in your <code>package.json</code> and use <code>npm run ${flow script}</code> command.</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ~/flow<span class="comment"># npx flow init</span></span><br><span class="line">$ ~/flow<span class="comment"># npx flow</span></span><br></pre></td></tr></table></figure>
+<p>This will create a <code>.flowconfig</code> containing a empty configuration, that uses a custom format that may resembles <code>.INI</code> files.</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[ignore]</span></span><br><span class="line"></span><br><span class="line"><span class="section">[include]</span></span><br><span class="line"></span><br><span class="line"><span class="section">[libs]</span></span><br><span class="line"></span><br><span class="line"><span class="section">[lints]</span></span><br><span class="line"></span><br><span class="line"><span class="section">[options]</span></span><br><span class="line"></span><br><span class="line"><span class="section">[strict]</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>Start Flow</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ~/flow<span class="comment"># npx flow</span></span><br></pre></td></tr></table></figure>
+<p>This command will start flow in watch mode in a background process and this will made the command took a long time to run. Just for a moment I though it was checking <code>node_modules</code>. When it run a second time, it will run fast.</p>
+<blockquote>
+<p>To stop the process use <code>npx flow stop</code>.</p>
+</blockquote>
+<ol>
+<li>Write a Flow file</li>
+</ol>
+<p><code>src/foo.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @flow</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">x: ?number</span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (x) &#123;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'default string'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The <code>// @flow</code> comment is required to say what are the files that flow should check. Notice that even when this file is a Javascript, it not longer have a valid Javascript syntax, so it won’t run on any browser, and that’s why we need a tool to remove the types annotations.</p>
+<blockquote>
+<p>If you want to check all the files, regardless they have the comment or not, you have to run <code>npx flow check --all</code>. Otherwise, just with running <code>npx flow</code> will work.</p>
+</blockquote>
+<ol>
+<li>Checking the code</li>
+</ol>
+<p>We run <code>npx flow</code> again and it will tell that there is something wrong in the code:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ~/flow<span class="comment"># npx flow</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Error ------------------------------------------------------ foo.js:5:12</span><br><span class="line"></span><br><span class="line">Cannot <span class="built_in">return</span> `x` because number [1] is incompatible with string [2].</span><br><span class="line"></span><br><span class="line"> foo.js:5:12</span><br><span class="line"> 5|     <span class="built_in">return</span> x;</span><br><span class="line">               ^</span><br><span class="line"></span><br><span class="line">References:</span><br><span class="line"> foo.js:3:18</span><br><span class="line"> 3| <span class="keyword">function</span> foo(x: ?number): string &#123;</span><br><span class="line">                     ^^^^^^ [1]</span><br><span class="line"> foo.js:3:27</span><br><span class="line"> 3| <span class="keyword">function</span> foo(x: ?number): string &#123;</span><br><span class="line">                              ^^^^^^ [2]</span><br><span class="line"></span><br><span class="line">Found 1 error</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Compiling the code</li>
+</ol>
+<p>In this guide I will use Babel but like I said earlier, you can also use the <code>flow-remove-types</code> tool.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ~/flow<span class="comment"># npm run build</span></span><br></pre></td></tr></table></figure>
+<p>Output: <code>lib/foo.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (x) &#123;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'default string'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>As you can see, Babel emits the code even when it have a type error.</p>
+<h5 id="Typescript"><a href="#Typescript" class="headerlink" title="Typescript"></a>Typescript</h5><p>To use Typescript you don’t need to setup anything else, as Typescript includes its own emitter. However, you can setup Typescript with Babel 7, if you like, but I won’t do it as the common use case is Typescript on its own.</p>
+<ol>
+<li>Initialize the project and add Typescript as a dev dependency.</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ~/flow<span class="comment"># npm init -y</span></span><br><span class="line">$ ~/flow<span class="comment"># npm i -D typescript</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>For this guide purposes I will install <code>Typescript 2.8</code>, that currently is in <code>RC</code>.</p>
+</blockquote>
+<ol>
+<li>Configure Typescript</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ~/flow<span class="comment"># npx tsc --init</span></span><br></pre></td></tr></table></figure>
+<p>This will create a Typescript configuration file. It’s a JSON standard file, with well JSON Schema support.</p>
+<p><code>tsconfig.json</code> (excerpt)<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"compilerOptions"</span>: &#123;</span><br><span class="line">    <span class="attr">"target"</span>: <span class="string">"es5"</span>,</span><br><span class="line">    <span class="attr">"module"</span>: <span class="string">"commonjs"</span>,</span><br><span class="line">    <span class="attr">"strict"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"esModuleInterop"</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>The <code>tsconfig.json</code> file will contain almost all compiler options, with most of them being commented out.</p>
+<ol>
+<li>Start Typescript</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ~/flow<span class="comment"># npx tsc</span></span><br></pre></td></tr></table></figure>
+<p>This command will check and compile all of the Typescript files, and place a compiled Javascript file aside of it. We can change this behavior in the configuration, setting a source folder, a destination folder, and even prevent emitting if there was a type error.</p>
+<blockquote>
+<p>To start Typescript in watch mode, just add <code>-w</code> flag.</p>
+</blockquote>
+<ol>
+<li>Updating Typescript configuration</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"compilerOptions"</span>: &#123;</span><br><span class="line">    <span class="attr">"target"</span>: <span class="string">"es5"</span>,</span><br><span class="line">    <span class="attr">"module"</span>: <span class="string">"commonjs"</span>,</span><br><span class="line">    <span class="attr">"outDir"</span>: <span class="string">"./lib"</span>,</span><br><span class="line">    <span class="attr">"rootDir"</span>: <span class="string">"./src"</span>,</span><br><span class="line">    <span class="attr">"lib"</span>: [<span class="string">"dom"</span>, <span class="string">"es2018"</span>],</span><br><span class="line">    <span class="attr">"noEmitOnError"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"strict"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"esModuleInterop"</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>With this configuration we will have a behavior similar that we had with Babel, but if there is any errors in typing, it won’t emit.</p>
+<ol>
+<li>Write a Typescript File</li>
+</ol>
+<p><code>src/foo.ts</code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">x?: <span class="built_in">number</span></span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (x) &#123;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'default string'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Any valid Javascript code is valid Typescript code, but in order to be consider Typescript code, you need to place it in a Typescript file, with a <code>.ts</code> extension. This fells like the comment in Flow, by default, Typescript compiler will only check Typescript files.</p>
+<ol>
+<li>Checking and compiling your code</li>
+</ol>
+<p>Typescript have its own compiler, and it handle both, type checking, and code compilation. We run <code>npx tsc</code> again and it tells us there is something wrong with our code.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ~/flow<span class="comment"># npx tsc</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">src/foo.ts(3,5): error TS2322: Type <span class="string">'number'</span> is not assignable to <span class="built_in">type</span> <span class="string">'string'</span>.</span><br></pre></td></tr></table></figure>
+<p>If you look, there is no <code>lib</code> folder, as it did not complete the emit. The description is shorter, but the message is very similar.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>I just show you how to setup the tools to a simple usage, but in a real project you probably would end using some code bundler like Webpack or Rollup. </p>
+<p>In the setting up and getting I will give both of them the same score, 8. While I fell that Typescript is easier to setup, because you need to setup Babel too if you want to use Flow, you probably have Babel already installed and configured anyway.</p>
+<p>I won’t give anything yet for the code analyze, because the code was just too simple.</p>
+<p>I will however, give 9 points to Typescript in the compilation, as I fell the prevention of emit some good feature, but I have to say I did like the Flow message better, that’s why I will give it an 8. </p>
+<h1 id="Current-Score"><a href="#Current-Score" class="headerlink" title="Current Score"></a>Current Score</h1><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align:center">Typescript</th>
+<th style="text-align:center">Flow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setting up</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td>Compilation</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td>Total</td>
+<td style="text-align:center">17</td>
+<td style="text-align:center">16</td>
+</tr>
+</tbody>
+</table>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="post-entry">
+  
+
+
+</div>
+        </div>
+        <!-- Sidebar -->
+        <!-- <div class="col l3 offset-l1">
+          <div class="sidebar-module sidebar-module-inset">
+    <h4>About</h4>
+    <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+</div>
+<div class="sidebar-module">
+    <h4>Archives</h4>
+    <ol class="list-unstyled">
+        <li><a href="#">March 2014</a></li>
+        <li><a href="#">February 2014</a></li>
+        <li><a href="#">January 2014</a></li>
+        <li><a href="#">December 2013</a></li>
+        <li><a href="#">November 2013</a></li>
+    </ol>
+</div>
+<div class="sidebar-module">
+    <h4>Elsewhere</h4>
+    <ol class="list-unstyled">
+        <li><a href="#">GitHub</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Facebook</a></li>
+    </ol>
+</div>
+        </div> -->
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col m6 s12">
+        <h5 class="white-text">About me</h5>
+        
+        <p class="grey-text text-lighten-4">
+          I'm a venezuelan guy, living in the wild. I have a passion about new technologies and web standards. These are my ideas, although not everyone of them are good, they are mine. I'm always looking to improve the performance and styling of my coding.
+
+        </p>
+        
+      </div>
+      <div class="col s12 hide-on-med-and-up navigation">
+        <h5 class="white-text">Navigation</h5>
+        <ul class="grey-text text-lighten-4">
+          
+  <li>
+    <a href="/">
+      Home
+    </a>
+  </li>
+
+  <li>
+    <a href="/archives">
+      Archive
+    </a>
+  </li>
+
+        </ul>
+      </div>
+      <div class="col m4 offset-m2 s12">
+        <h5 class="white-text">Social</h5>
+        <ul class"social">
+          
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="https://www.github.com/michaeljota">
+              <i class="fab fa-github"></i> Github
+            </a>
+          </li>
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="https://www.linkedin.com/in/michael-de-abreu-178a41120">
+              <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+          
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="/atom.xml">
+              <i class="fas fa-rss"></i> RSS
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+      © 2018 Michael De Abreu
+      <span class="grey-text text-lighten-4 right">
+        Theme made with ❤️ for
+        <a href="https://hexo.io">Hexo</a>
+        using 
+        <a href="http://next.materializecss.com">Materialize</a>
+      </span>
+    </div>
+  </div>
+</footer>
+    <!-- Scripts -->
+    <script src="/materialize/js/materialize.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+
+</html>
