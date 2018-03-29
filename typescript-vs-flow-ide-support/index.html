@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/favicon/favicon.ico">
+  <title>michaeljota</title>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/materialize/sass/materialize.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link rel="stylesheet" href="/css/ie10-viewport-bug-workaround.css">
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="/css/blog.css">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body>
+    <!-- Menu -->
+    <nav>
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo mat-hexo">michaeljota</a>
+    <ul id="nav-mobile" class="right hide-on-small-only">
+      
+  <li>
+    <a href="/">
+      Home
+    </a>
+  </li>
+
+  <li>
+    <a href="/archives">
+      Archive
+    </a>
+  </li>
+
+    </ul>
+  </div>
+</nav>
+    <main class="container">
+      <div class="row">
+        <!-- Main Content -->
+        <div class="col s12">
+          <div class="row">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content">
+        <div class="card-header">
+          <span class="card-title">
+            <a href="/typescript-vs-flow-ide-support/">
+              Typescript vs Flow - IDE Support
+            </a>
+          </span>
+          <div class"row">
+            
+
+  
+      <a href="/tags/typescript/">
+        <div class="chip article">#typescript</div>
+      </a>
+     
+      <a href="/tags/javascript/">
+        <div class="chip article">#javascript</div>
+      </a>
+     
+      <a href="/tags/flow/">
+        <div class="chip article">#flow</div>
+      </a>
+    
+
+
+          </div>
+          <span class="card-subtitle right-align">
+            2018-03-25
+            
+          </span>
+        </div>
+      <p>This is the second post in a series about comparing Typescript and Flow.</p>
+<ul>
+<li><a href="https://michaeljota.github.io/typescript-vs-flow-getting-started" target="_blank" rel="noopener">Getting Started</a></li>
+<li>IDE Support</li>
+</ul>
+<hr>
+<p>In this post I will look for the most popular IDE and will look about how well they support and integrate with Typescript and Flow. I won’t be using any of this IDE, so this won’t include usability, that’s for another post. I’ll just check about how many IDE have support, and how many features for each, if the support is from a first party, or a third party. The order of appearance will be alphabetical. For the sake of web development, I will also add text editors.</p>
+<h1 id="Atom"><a href="#Atom" class="headerlink" title="Atom"></a><a href="https://atom.io" target="_blank" rel="noopener">Atom</a></h1><blockquote>
+<p>Atom is a free and open source popular text editor, created by Github using web technologies. It have plugins support, and many features available out the box.</p>
+</blockquote>
+<h2 id="Flow"><a href="#Flow" class="headerlink" title="Flow"></a>Flow</h2><p>Atom does not have support for Flow out-the-box. But it does have several plugins available for it.</p>
+<h3 id="Nuclide"><a href="#Nuclide" class="headerlink" title="Nuclide"></a><a href="https://nuclide.io" target="_blank" rel="noopener">Nuclide</a></h3><blockquote>
+<p>Nuclide is a full IDE created by people at Facebook that has support for Flow built-in. It provides a linter, autocomplete and type coverage support, click-to-definition and type description on hover.<br>However, it currently <strong>lacks support for on-the-fly type-checking</strong> (showing your type errors before you save your file).</p>
+</blockquote>
+<h3 id="Flow-IDE"><a href="#Flow-IDE" class="headerlink" title="Flow-IDE"></a><a href="https://atom.io/packages/flow-ide" target="_blank" rel="noopener">Flow-IDE</a></h3><blockquote>
+<p>Flow-IDE is a smaller package that only provides you with a linter and autocomplete functionality. It, too, currently lacks support for on-the-fly linting.</p>
+</blockquote>
+<h3 id="Linter-Flow"><a href="#Linter-Flow" class="headerlink" title="Linter-Flow"></a><a href="https://atom.io/packages/linter-flow" target="_blank" rel="noopener">Linter-Flow</a></h3><blockquote>
+<p>In case you’re looking for something even more minimal, linter-flow may be worth your attention. It only lints your code and provides no other features, but it does support on-the-fly linting.</p>
+</blockquote>
+<h3 id="Autocomplete-Flow"><a href="#Autocomplete-Flow" class="headerlink" title="Autocomplete-Flow"></a><a href="https://atom.io/packages/autocomplete-flow" target="_blank" rel="noopener">Autocomplete-Flow</a></h3><blockquote>
+<p>autocomplete-flow is another purpose-built tool that only does one thing. This package, as the name suggests, will give your flow enabled code autocomplete suggestions and nothing else.</p>
+</blockquote>
+<hr>
+<p>So there are four options, but it actually seems like we would combine at least three of them to have a real IDE experience. I think if I had to chose Atom, I could go with <code>Nuclide</code> and <code>Linter-Flow</code> and see how that works, but I use Windows to develop, just because, and <code>Nuclide</code> does not have full support for Windows. So, that.</p>
+<h2 id="Typescript"><a href="#Typescript" class="headerlink" title="Typescript"></a>Typescript</h2><h3 id="Atom-Typescript"><a href="#Atom-Typescript" class="headerlink" title="Atom-Typescript"></a><a href="https://atom.io/packages/atom-typescript" target="_blank" rel="noopener">Atom-Typescript</a></h3><blockquote>
+<p>A Typescript language service for Atom developed by TypeStrong</p>
+</blockquote>
+<p>Well, we don’t have that much of options with Typescript, actually, there are a few where we will get that much of options. This depends on other package <code>atom-ide-ui</code>. On other hand, it have several common used features such as autocomplete, live error analysis, type description on hover, click-to-definition, and compile on save, among others. So, I think you will get all the IDE experience form this.</p>
+<h1 id="Emacs"><a href="#Emacs" class="headerlink" title="Emacs"></a><a href="https://www.gnu.org/software/emacs" target="_blank" rel="noopener">Emacs</a></h1><blockquote>
+<p>An extensible, customizable, free/libre text editor — and more.</p>
+</blockquote>
+<h2 id="Flow-1"><a href="#Flow-1" class="headerlink" title="Flow"></a>Flow</h2><h3 id="flow-for-emacs"><a href="#flow-for-emacs" class="headerlink" title="flow-for-emacs"></a><a href="https://github.com/flowtype/flow-for-emacs" target="_blank" rel="noopener">flow-for-emacs</a></h3><blockquote>
+<p>An emacs plugin for Flow, a static typechecker for JavaScript.</p>
+<ul>
+<li>Shows errors found by typechecking JavaScript code with Flow.</li>
+<li>Provides a bunch of common IDE features powered by Flow to aid reading and writing JavaScript code.</li>
+</ul>
+</blockquote>
+<p>I haven’t used emacs, so I don’t know what to expect about this. I do know that you need to setup your environment to work with this. It is however, officially supported, so that is something.</p>
+<h2 id="Typescript-1"><a href="#Typescript-1" class="headerlink" title="Typescript"></a>Typescript</h2><h3 id="tide-Typescript-Interactive-Development-Environment-for-Emacs"><a href="#tide-Typescript-Interactive-Development-Environment-for-Emacs" class="headerlink" title="tide - Typescript Interactive Development Environment for Emacs"></a><a href="https://github.com/ananthakumaran/tide" target="_blank" rel="noopener">tide</a> - Typescript Interactive Development Environment for Emacs</h3><p>I have the same problem with this. But it does seems to have more features available that the one for Flow. Maybe one of you guys can help me out with this.</p>
+<h1 id="Sublime-Text"><a href="#Sublime-Text" class="headerlink" title="Sublime Text"></a><a href="https://www.sublimetext.com/" target="_blank" rel="noopener">Sublime Text</a></h1><blockquote>
+<p>A sophisticated text editor for code, markup and prose.</p>
+</blockquote>
+<h2 id="Flow-2"><a href="#Flow-2" class="headerlink" title="Flow"></a>Flow</h2><h3 id="Flow-3"><a href="#Flow-3" class="headerlink" title="Flow"></a><a href="https://packagecontrol.io/packages/Flow" target="_blank" rel="noopener">Flow</a></h3><blockquote>
+<p>Flow JavaScript analyzer plugin for SublimeText 2 and 3</p>
+</blockquote>
+<h3 id="SublimeLinter-flow"><a href="#SublimeLinter-flow" class="headerlink" title="SublimeLinter-flow"></a><a href="https://packagecontrol.io/packages/SublimeLinter-flow" target="_blank" rel="noopener">SublimeLinter-flow</a></h3><blockquote>
+<p>SublimeLinter plugin for JavaScript static type checking, using flow.</p>
+</blockquote>
+<hr>
+<p>Again, we have options. The first actually has not been updated in over 3 years. It seems to runs only in Linux and MacOS, but it does have all the common features of Flow. The other one, have seen more recent releases, but it seems to be a Linter only plugin.</p>
+<h2 id="Typescript-2"><a href="#Typescript-2" class="headerlink" title="Typescript"></a>Typescript</h2><h3 id="Typescript-Sublime-Plugin"><a href="#Typescript-Sublime-Plugin" class="headerlink" title="Typescript Sublime Plugin"></a><a href="https://github.com/Microsoft/Typescript-Sublime-Plugin" target="_blank" rel="noopener">Typescript Sublime Plugin</a></h3><blockquote>
+<p>The plugin uses an IO wrapper around the Typescript language services to provide an enhanced Sublime Text experience when working with Typescript code.</p>
+</blockquote>
+<p>This is an official plugin from Microsoft and it seems to have all common used features about Typescript. It is regularly updated and also have support for Linux, Windows and MacOS.</p>
+<h1 id="Vim-and-NeoVim"><a href="#Vim-and-NeoVim" class="headerlink" title="Vim (and NeoVim)"></a><a href="https://www.vim.org/" target="_blank" rel="noopener">Vim</a> (and <a href="https://neovim.io/" target="_blank" rel="noopener">NeoVim</a>)</h1><blockquote>
+<p>Vim is a highly configurable text editor built to make creating and changing any kind of text very efficient.</p>
+</blockquote>
+<h2 id="Flow-4"><a href="#Flow-4" class="headerlink" title="Flow"></a>Flow</h2><h3 id="ale-Asynchronous-Lint-Engine-Vim-and-NeoVim"><a href="#ale-Asynchronous-Lint-Engine-Vim-and-NeoVim" class="headerlink" title="ale - Asynchronous Lint Engine (Vim and NeoVim)"></a><a href="https://github.com/w0rp/ale" target="_blank" rel="noopener">ale</a> - Asynchronous Lint Engine (Vim and NeoVim)</h3><blockquote>
+<p>The Asynchronous Lint Engine (ALE) vim-ale plugin for Vim 8+ and NeoVim provides linting of many syntaxes during editing, before files are saved. Supported JavaScript linters include eslint, jscs, jshint, flow, standard, and xo.</p>
+</blockquote>
+<h3 id="Vim-flow-Vim-only"><a href="#Vim-flow-Vim-only" class="headerlink" title="Vim-flow (Vim only)"></a><a href="https://github.com/flowtype/vim-flow" target="_blank" rel="noopener">Vim-flow</a> (Vim only)</h3><blockquote>
+<p>A vim plugin for Flow.</p>
+<ul>
+<li>Adds completions to omnifunc</li>
+<li>Checks JavaScript files for type errors on save</li>
+</ul>
+</blockquote>
+<hr>
+<p>Both options seems to cover basic functionality, but <code>ale</code> does the checking on the fly, and <code>vim-flow</code> waits for you to save. Also, <code>ale</code> integrate with other common tools used to lint. <code>vim-flow</code> is the official tool, however, even in the <code>flow</code> IDE page is the second to chose, so. I think I would take the first one.</p>
+<h2 id="Typescript-3"><a href="#Typescript-3" class="headerlink" title="Typescript"></a>Typescript</h2><h3 id="nvim-typescript-NeoVim-only"><a href="#nvim-typescript-NeoVim-only" class="headerlink" title="nvim-typescript (NeoVim only)"></a><a href="https://github.com/mhartington/nvim-typescript" target="_blank" rel="noopener">nvim-typescript</a> (NeoVim only)</h3><blockquote>
+<p>Provides standard IDE-like features such as auto-completion, viewing of documentation and type-signatures, go to definition, and reference finding.</p>
+</blockquote>
+<h3 id="typescript-vim-Vim-only"><a href="#typescript-vim-Vim-only" class="headerlink" title="typescript-vim (Vim only)"></a><a href="https://github.com/leafgarland/typescript-vim" target="_blank" rel="noopener">typescript-vim</a> (Vim only)</h3><blockquote>
+<p>Typescript Syntax for Vim.</p>
+</blockquote>
+<h3 id="yats-vim-Vim-only"><a href="#yats-vim-Vim-only" class="headerlink" title="yats.vim (Vim only)"></a><a href="https://github.com/HerringtonDarkholme/yats.vim" target="_blank" rel="noopener">yats.vim</a> (Vim only)</h3><blockquote>
+<p>Yet Another Typescript Syntax: The most advanced Typescript Syntax Highlighting in Vim</p>
+</blockquote>
+<h3 id="Tsuquyomi-Vim-only"><a href="#Tsuquyomi-Vim-only" class="headerlink" title="Tsuquyomi (Vim only)"></a><a href="https://github.com/Quramy/tsuquyomi" target="_blank" rel="noopener">Tsuquyomi</a> (Vim only)</h3><blockquote>
+<p>Make your Vim a Typescript IDE.</p>
+</blockquote>
+<hr>
+<p>You would probably have to chose one syntax highlighting, and combine it with Tsuquyomi. Tsuquyomi is a client for the TSServer, and will allow you to use completion, go-to-definition and other features to a IDE-like experience. It need for a buffer is saved to check the file. You can check manually with a command, and also it allows you to check the entire project with another command.</p>
+<h1 id="Visual-Studio-Code"><a href="#Visual-Studio-Code" class="headerlink" title="Visual Studio Code"></a><a href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a></h1><blockquote>
+<p>Code editing. Redefined. Free. Open source. Runs everywhere.</p>
+</blockquote>
+<h2 id="Flow-5"><a href="#Flow-5" class="headerlink" title="Flow"></a>Flow</h2><h3 id="Flow-Language-Support"><a href="#Flow-Language-Support" class="headerlink" title="Flow Language Support"></a><a href="https://marketplace.visualstudio.com/items?itemName=flowtype.flow-for-vscode" target="_blank" rel="noopener">Flow Language Support</a></h3><blockquote>
+<p>This provides all the functionality you would expect — linting, intellisense, type tooltips and click-to-definition. It’s stable and under active development.</p>
+</blockquote>
+<h3 id="vscode-flow-ide"><a href="#vscode-flow-ide" class="headerlink" title="vscode-flow-ide"></a><a href="https://marketplace.visualstudio.com/items?itemName=gcazaciuc.vscode-flow-ide" target="_blank" rel="noopener">vscode-flow-ide</a></h3><blockquote>
+<p>An alternative Flowtype extension for Visual Studio Code. Flowtype is a static type checker went to find errors in Javascript programs.</p>
+</blockquote>
+<hr>
+<p>The official plugin, Flow Language Support, seems to have all the features that you are looking in a plugin like this, such as Intellisense, go-to-definition, errors and warnings diagnostics, and others. The Flow IDE also seems to have all this features.</p>
+<h2 id="Typescript-4"><a href="#Typescript-4" class="headerlink" title="Typescript"></a>Typescript</h2><p>Typescript support is build-in on VSCode. VSCode ships its own version of Typescript, so you don’t need to configure anything.</p>
+<h1 id="Webstorm"><a href="#Webstorm" class="headerlink" title="Webstorm"></a><a href="https://www.jetbrains.com/webstorm/" target="_blank" rel="noopener">Webstorm</a></h1><blockquote>
+<p>The smartest JavaScript IDE.Powerful IDE for modern JavaScript development.</p>
+</blockquote>
+<p>Both, Flow and Typescript, have a first class support in Webstorm. However, you would need to configure Flow first to be able to use it, whereas to use Typescript, no previous configuration is required.</p>
+<hr>
+<h1 id="Additional-Supported-IDE"><a href="#Additional-Supported-IDE" class="headerlink" title="Additional Supported IDE"></a>Additional Supported IDE</h1><h2 id="Flow-6"><a href="#Flow-6" class="headerlink" title="Flow"></a>Flow</h2><p>Actually, according to the documentation, Flow support is limited to the IDE already listed.</p>
+<h2 id="Typescript-5"><a href="#Typescript-5" class="headerlink" title="Typescript"></a>Typescript</h2><p>Typescript does have support for other IDE:</p>
+<ul>
+<li><a href="https://alm-tools.github.io" target="_blank" rel="noopener">alm.tools</a> - Complete IDE for Typescript. Written in Typescript.</li>
+<li><a href="https://github.com/jbaron/cats" target="_blank" rel="noopener">CATS</a> - Complete IDE for Typescript. Written in Typescript.</li>
+<li><a href="https://www.eclipse.org/" target="_blank" rel="noopener">Eclipse</a><ul>
+<li><a href="https://github.com/angelozerr/typescript.java/wiki/Getting-Started" target="_blank" rel="noopener">Typescript IDE</a> - A set of Typescript plugins.</li>
+<li><a href="https://github.com/palantir/eclipse-typescript" target="_blank" rel="noopener">Eclipse Typescript</a> - An Eclipse plug-in for developing in the Typescript language.</li>
+</ul>
+</li>
+<li><a href="https://netbeans.org/" target="_blank" rel="noopener">NetBeans</a><ul>
+<li><a href="https://github.com/Everlaw/nbts" target="_blank" rel="noopener">nbts</a> - NetBeans Typescript editor plugin</li>
+</ul>
+</li>
+<li><a href="https://notepad-plus-plus.org" target="_blank" rel="noopener">Notepad++</a><ul>
+<li><a href="https://github.com/chai2010/notepadplus-typescript" target="_blank" rel="noopener">Notepad++ Typescript</a> - Notepad++ colorization support for Typescript.</li>
+</ul>
+</li>
+<li><a href="https://www.visualstudio.com" target="_blank" rel="noopener">Visual Studio</a> - A complete IDE with support for several development workflows. Support for latest Typescript only in 2015 and 2017.</li>
+</ul>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>I think that overall, Typescript support seems to be better, most of the plugins and IDE that support Typescript use the Typescript Language Service, and I think this is great way to provide features to the clients, and eventually the user.</p>
+<p>Flow seems to have this right, and the Flow Language Server is already out, but only Atom appears to use this as today. I hope Flow support improve in the future with more plugins and IDE using this, because at the end they are implementing a long extended protocol, the Language Server Protocol. Today Windows does not seems to be a very supported platform to work with Flow, but they did release a Windows binary recently, so I think this can change.</p>
+<blockquote>
+<p>To develop with Flow better have a Unix like machine to use Nuclide.</p>
+<p>To develop with Typescript even when you have more choices, you are safe with VSCode.</p>
+<p><del>Either way you are stuck with Electron consuming your soul for living</del></p>
+</blockquote>
+<p>Even when you will probably have the same experience coding Flow with Nuclide, that coding Typescript with VSCode, the fact that you can’t even choice the SO bugs me. If you want to be outside the safe zone, you will have to install and configure Flow most of the time that you will need to configure Typescript. For this reason I will score Typescript with an 9, and Flow with a 6. You may see this unfair, but stick with me, the main issue is that you need a Linux machine or a Mac, to be able to run the editor with best Flow support, but if you don’t want one of the Microsoft editors, you probably will end with a really good experience.</p>
+<h1 id="Current-Score"><a href="#Current-Score" class="headerlink" title="Current Score"></a>Current Score</h1><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align:center">Typescript</th>
+<th style="text-align:center">Flow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Getting Started</td>
+<td style="text-align:center">17</td>
+<td style="text-align:center">16</td>
+</tr>
+<tr>
+<td>Editor Support</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td>Total</td>
+<td style="text-align:center">26</td>
+<td style="text-align:center">22</td>
+</tr>
+</tbody>
+</table>
+<h1 id="That’s-all-folks"><a href="#That’s-all-folks" class="headerlink" title="That’s all folks!"></a>That’s all folks!</h1><p>Thank you for reading. To all my new followers, <code>hello followers!</code>. Please, check my other post as well. I mainly write about Angular and Typescript. I’ll looking forward to read in your commends your thoughts about this series.</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="post-entry">
+  
+
+
+</div>
+        </div>
+        <!-- Sidebar -->
+        <!-- <div class="col l3 offset-l1">
+          <div class="sidebar-module sidebar-module-inset">
+    <h4>About</h4>
+    <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+</div>
+<div class="sidebar-module">
+    <h4>Archives</h4>
+    <ol class="list-unstyled">
+        <li><a href="#">March 2014</a></li>
+        <li><a href="#">February 2014</a></li>
+        <li><a href="#">January 2014</a></li>
+        <li><a href="#">December 2013</a></li>
+        <li><a href="#">November 2013</a></li>
+    </ol>
+</div>
+<div class="sidebar-module">
+    <h4>Elsewhere</h4>
+    <ol class="list-unstyled">
+        <li><a href="#">GitHub</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Facebook</a></li>
+    </ol>
+</div>
+        </div> -->
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col m6 s12">
+        <h5 class="white-text">About me</h5>
+        
+        <p class="grey-text text-lighten-4">
+          I'm a venezuelan guy, living in the wild. I have a passion about new technologies and web standards. These are my ideas, although not everyone of them are good, they are mine. I'm always looking to improve the performance and styling of my coding.
+
+        </p>
+        
+      </div>
+      <div class="col s12 hide-on-med-and-up navigation">
+        <h5 class="white-text">Navigation</h5>
+        <ul class="grey-text text-lighten-4">
+          
+  <li>
+    <a href="/">
+      Home
+    </a>
+  </li>
+
+  <li>
+    <a href="/archives">
+      Archive
+    </a>
+  </li>
+
+        </ul>
+      </div>
+      <div class="col m4 offset-m2 s12">
+        <h5 class="white-text">Social</h5>
+        <ul class"social">
+          
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="https://www.github.com/michaeljota">
+              <i class="fab fa-github"></i> Github
+            </a>
+          </li>
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="https://www.linkedin.com/in/michael-de-abreu-178a41120">
+              <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+          </li>
+          
+          
+          
+          <li>
+            <a class="grey-text text-lighten-3" href="/atom.xml">
+              <i class="fas fa-rss"></i> RSS
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+      © 2018 Michael De Abreu
+      <span class="grey-text text-lighten-4 right">
+        Theme made with ❤️ for
+        <a href="https://hexo.io">Hexo</a>
+        using 
+        <a href="http://next.materializecss.com">Materialize</a>
+      </span>
+    </div>
+  </div>
+</footer>
+    <!-- Scripts -->
+    <script src="/materialize/js/materialize.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+
+</html>
